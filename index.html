@@ -1,0 +1,802 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="sv">
+<head>
+<link rel="shortcut icon" href="media/favicon.ico" type="image/x-icon">
+<!--<link rel="icon" href="media/favicon.ico" type="image/x-icon">-->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="keywords" content="" />
+<meta name="description" content="Dear Diane," />
+<link rel="apple-touch-icon-precomposed" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="your-custom-icon-for-ipad(1).png" />
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="your-custom-icon-for-iphone(1).png" />
+<link rel="apple-touch-startup-image" href="startup.png">
+<link href="startup.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">
+
+<title>Diane</title>
+
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='stylesheet.css' rel='stylesheet' type='text/css'>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+
+<script type="text/javascript" src="https://rawgithub.com/jquery/jquery-color/master/jquery.color.js"></script>
+<script type="text/javascript" src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
+<script type="text/javascript" src="jgestures.min.js"></script>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="slideToucher.js"></script>
+
+
+   
+
+
+<script type="text/javascript">
+
+var db;
+var colorsArray;
+var postsArray;
+var currentWeather;
+var currentDate;
+var currentColor;
+var months;
+var colors;
+var activePost;
+var currentColorIndex;
+var scrollPointsArray;
+var scrollPoints;
+var currentScroll;
+var lastScroll;
+var postToShow;
+var postInView;
+var currentSlide;
+var plugin;
+var currentTemperature;
+var currentPosition;
+var geocoder;
+var currentLocation;
+var currentScrollPosition = 0;
+
+
+
+
+
+function setBackground (weather) {
+console.log(weather);
+var temperature = weather.temperature;
+console.log("temperature: " +temperature);
+weather = weather.icon
+currentWeather = weather;
+currentTemperature = temperature;
+console.log("cuurentTemperature: " +currentTemperature);
+
+	colors = new Array(8);
+	colors[0] = "#ACD9D1";
+	colors[1] = "#3DD2DA";
+	colors[2] = "#AF8E93";
+	colors[3] = "#FF9E8A";
+	colors[4] = "#364542";
+	colors[5] = "#0E4345";
+	colors[6] = "#362A2A";
+	colors[7] = "#5A302A";
+	
+	var randomColor = Math.floor(Math.random() * 7) + 0;
+
+
+	if (weather == "clear-day") {
+		currentColor = '#ACD9D1';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "clear-night") {
+		currentColor = '#3DD2DA';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "rain") {
+		currentColor = '#AF8E93';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "snow") {
+		currentColor = '#FF9E8A';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "sleet") {
+		currentColor = '#FF9E8A';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "wind") {
+		currentColor = '#364542';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "cloudy") {
+		currentColor = '#0E4345';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "partly-cloudy-day") {
+		currentColor = '#362A2A';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	if (weather == "partly-cloudy-night") {
+		currentColor = '#5A302A';
+		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+	}
+	
+	/*else {
+		//currentColor = '#778abf';
+		currentColor = '#4100fa';
+	}*/
+	
+	console.log("currentColor:" + currentColor);
+	
+	initDatabase();
+	loadUnsavedPost ();				
+}
+
+
+function loadUnsavedPost (){
+	
+	
+
+	var time = formatAMPM(currentDate);	
+	
+	$("body, #topMenu").animate({
+				backgroundColor: currentColor
+				},1000);
+				
+	window.setTimeout(function () {
+	    $('#unsavedPost').animate({'opacity': 0}, 1000, function () {
+	    console.log("months[currentDate.getMonth()]: " +months[currentDate.getMonth()]);
+	    $('#unsavedPostWrapper').prepend('<span id="unsavedPostDate" class="date">'+ parseInt(currentTemperature, 10) +'° '+ currentLocation.substring(0, currentLocation.indexOf(',')) +'<br><b>'+ time +' '+ months[currentDate.getMonth()] +' '+ currentDate.getDate() +'th </b></span>');	    
+	    $(this).text('Dear Diane,');
+	}).animate({'opacity': 1}, 1000);
+	},200);
+}
+
+
+
+function readWeather (json) {
+	console.log("tolkar väder");
+	setBackground (json.currently);
+}
+
+
+function findLocation () {
+
+	geocoder = new google.maps.Geocoder();
+	
+	console.log("testar currentPosition.coords.latitude:" +currentPosition.coords.latitude);
+	
+	var latlng = new google.maps.LatLng(currentPosition.coords.latitude, currentPosition.coords.longitude);
+    geocoder.geocode({'latLng': latlng}, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+      console.log(results)
+        if (results[1]) {
+         //formatted address
+         console.log(results[0].formatted_address);
+         currentLocation = results[0].formatted_address;
+        //find country name
+             for (var i=0; i<results[0].address_components.length; i++) {
+            for (var b=0;b<results[0].address_components[i].types.length;b++) {
+ 
+            //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+                if (results[0].address_components[i].types[b] == "administrative_area_level_1") {
+                    //this is the object you are looking for
+                    city= results[0].address_components[i];
+                    break;
+                }
+            }
+        }
+        //city data
+        //alert(city.short_name + " " + city.long_name)
+ 
+ 
+        } else {
+          alert("No results found");
+        }
+      } else {
+        alert("Geocoder failed due to: " + status);
+      }
+   	
+	
+	});
+}
+
+
+
+function getWeather (position) {
+
+	console.log(position);
+	currentPosition = position;
+	
+	$.ajax({
+	  dataType: "jsonp",
+	  url: 'https://api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
+	  success: readWeather
+	});
+	
+	findLocation();
+}
+
+function getLocation () {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(getWeather);
+	}
+	
+	/*else {
+	
+			window.setTimeout(function () {
+			    $('#unsavedPost').animate({'opacity': 0}, 1000, function () {
+			    console.log("months[currentDate.getMonth()]: " +months[currentDate.getMonth()]);
+			    $('#unsavedPostWrapper').prepend('<p class="div-textarea">Sorry, Diane needs your location in order to run. Please go to your iPhones location settings and turn on Diane.</div></div>');	    
+			}).animate({'opacity': 1}, 1000);
+			},200);
+		}
+	
+	}*/
+}
+
+function formatAMPM(date) {
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12; // the hour '0' should be '12'
+  minutes = minutes < 10 ? '0'+minutes : minutes;
+  var strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+
+
+function getDateFormat() {
+	//currentDate = new Date(getFullYear(), getMonth(), getDate(), getDay(), getHours(), getMinutes(), getSeconds());
+	currentDate = new Date();
+	console.log("currentDate:" + currentDate);
+	console.log("månaden är:" + currentDate.getMonth());
+	//currentDate = newDate.getDate();
+	
+	
+	months = new Array(12);
+	months[0] = "January";
+	months[1] = "February";
+	months[2] = "March";
+	months[3] = "April";
+	months[4] = "May";
+	months[5] = "June";
+	months[6] = "July";
+	months[7] = "August";
+	months[8] = "September";
+	months[9] = "October";
+	months[10] = "November";
+	months[11] = "December";
+	
+	//$('#unsavedPostWrapper').prepend('<span class="date">'+ months[currentDate.getMonth()] +' '+ currentDate.getDate() +'th </span>');
+}
+
+
+
+
+function errorHandler(transaction, error){
+ 	if (error.code==1){
+ 		// DB Table already exists
+ 	} else {
+    	// Error is a human-readable string.
+	    console.log('Oops.  Error was '+error.message+' (Code '+error.code+')');
+ 	}
+    return false;
+}
+
+
+
+function selectAll(db){
+
+
+	db.transaction(
+	    function (transaction) {
+	        transaction.executeSql("SELECT * FROM posts;", [],
+                dataSelectHandler, errorHandler);
+	    }
+	);
+}
+
+
+
+function selectLatest (db){
+	db.transaction(
+	    function (transaction) {
+	        transaction.executeSql("SELECT * FROM posts ORDER BY id desc LIMIT 1;", [],
+                singleDataSelectHandler, errorHandler);
+	    }
+	);
+}
+
+
+
+function singleDataSelectHandler(transaction, results){
+ 	var row; 
+ 	var post;
+ 	var newDate;
+ 	console.log("hämtar data: " +results.rows.length);
+	// Handle the results
+    for (var i=0; i<results.rows.length; i++) {
+	    console.log("hittade rad");
+    	row = results.rows.item(i);
+        post = new Object();
+        
+        post.id = row['id']; 
+    	post.content   = row['content'];
+        post.bgcolor = row['bgcolor'];
+        post.weather  = row['weather'];
+        post.date  = row['date'];
+        newDate = new Date(post.date);
+        post.temperature = row['temperature'].substr(0, 2);
+        console.log("post.temperature:" +post.temperature);
+        post.location = row['location'].substring(0, row['location'].indexOf(','));
+        console.log("post.location: " +post.location);
+        
+        colorsArray.unshift(post.bgcolor);
+        
+        var time = formatAMPM(newDate);
+        
+        $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature +'° '+ post.location +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
+        $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+        
+       //console.log(+ post.id + post.content + post.bgcolor + post.weather + post.date +);
+       collectPosts ();
+       	scalePosts();
+       	plugin.vertical.slideCount++;
+       	console.log("slideCount: " +plugin.vertical.slideCount);
+       	//slider(colorsArray, currentColor);
+       	//showAndHide(); 
+    }
+ 
+}
+
+
+
+
+function dataSelectHandler(transaction, results){
+ 	var row; 
+ 	var post;
+ 	var newDate;
+ 	console.log("hämtar data: " +results.rows.length);
+ 	colorsArray = new Array();
+	// Handle the results
+    for (var i=0; i<results.rows.length; i++) {
+	    console.log("hittade rad");
+    	row = results.rows.item(i);
+        
+        post = new Object();
+        
+        post.id = row['id']; 
+    	post.content   = row['content'];
+        post.bgcolor = row['bgcolor'];
+        post.weather    = row['weather'];
+        post.date  = row['date'];
+        newDate = new Date(post.date);
+        post.temperature = row['temperature'].substr(0, 2);
+        post.location = row['location'].substring(0, row['location'].indexOf(','));
+        console.log("post.location: " +post.location);
+        //console.log("newDate year, seconds är:"+ newDate.getFullYear());
+        colorsArray.unshift(post.bgcolor);
+        console.log("Post: " + post.id + post.content + post.bgcolor + post.weather + post.date + post.temperature + post.location);
+        //console.log("Månad är:" + post.date.getMonth());
+        
+        var time = formatAMPM(newDate);
+        
+        $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature +'° '+ post.location +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
+        //$('#grid').prepend('<a href="#'+post.id+'"><div class="gridBox" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div></a>');
+        $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+       
+       	//showAndHide(); 
+    }
+    	collectPosts();
+       	scalePosts();
+       	slider(colorsArray, currentColor, postInView);
+}
+
+
+
+
+
+function prePopulate(db){
+	db.transaction(
+	    function (transaction) {
+		//Optional Starter Data when page is initialized
+		var data = ['Dear Diane','#B3B4EF','clear-day','21-4-2013'];
+		transaction.executeSql("INSERT INTO posts(content, bgcolor, weather, date) VALUES (?, ?, ?, ?)", [data[0], data[1], data[2], data[3]]);
+	    }
+	);
+}
+
+
+
+
+
+function deletePost(db){
+	db.transaction(
+	    function (transaction) {
+		transaction.executeSql("DELETE FROM posts WHERE weather='clear-day';");
+		console.log("raderade rad");
+	    }
+	);
+	
+}
+
+
+
+
+
+function savePost(db){
+	db.transaction(
+	    function (transaction) {
+	    var content;
+	    if(($('#unsavedPost').text()) != '') {
+	    		content = $('#unsavedPost').text();
+	    		console.log("content:" + content);
+	    		console.log("currentTemperature:" +currentTemperature);
+	    		var data = [content, currentColor, currentWeather, currentDate, currentTemperature, currentLocation];
+	    		transaction.executeSql("INSERT INTO posts(content, bgcolor, weather, date, temperature, location) VALUES (?, ?, ?, ?, ?, ?)", [data[0], data[1], data[2], data[3], data[4], data[5]]);
+	    		console.log("data[5]:" +data[5]);
+	    		console.log("sparade inlägg");
+	    		$('#unsavedPost').val('');
+	    		$('#unsavedPost').text('Dear Diane,');
+	    		$('#unsavedPost').blur();
+	    		selectLatest (db);
+	    	}
+		//Optional Starter Data when page is initialized
+		else {
+			//alert("Empty textarea");
+		}
+	    }
+	);
+}
+
+
+
+
+
+function dropTables(db){
+	db.transaction(
+	    function (transaction) {
+	    	transaction.executeSql("DROP TABLE posts;", [], nullDataHandler, errorHandler);
+	    	console.log("deleted database");
+	    }
+	);
+}
+
+
+
+
+
+
+function nullDataHandler(transaction, results) { }
+ 
+ 
+ 
+ 
+ 
+function createTables(db)
+{
+	console.log("skapar table");
+	db.transaction(
+        function (transaction) {
+        	transaction.executeSql('CREATE TABLE IF NOT EXISTS posts(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, bgcolor TEXT NOT NULL, weather TEXT, date TEXT, temperature TEXT NOT NULL, location TEXT NOT NULL);', [], nullDataHandler, errorHandler);
+        });
+        
+    //prePopulate(db);
+}
+
+
+
+
+
+function initDatabase() {
+
+		try {
+		    if (!window.openDatabase) {
+		        alert('not supported');
+		    } else {
+		        var shortName = 'dianedb';
+		        var version = '1.0';
+		        var displayName = 'Diane';
+		        var maxSize = 65536; // in bytes
+		        db = openDatabase(shortName, version, displayName, maxSize);
+		        console.log("databas skapades");
+		  
+		        //
+		        // You should have a database instance in db.
+		    }
+		} catch(e) {
+		    // Error handling code goes here.
+		    if (e == 2) {
+		        // Version number mismatch.
+		        alert("Invalid database version.");
+		    } else {
+		        alert("Unknown error "+e+".");
+		    }
+		    return;
+		}
+		 
+		console.log("Database is: "+db);
+		createTables(db);
+		selectAll(db);
+		//deletePost(db);
+		//dropTables(db);
+}
+
+
+
+
+
+function ReloadPage() {
+   location.reload();
+};
+
+
+$(window).resize(function() {
+
+  	$(".div-textarea").width($(window).width() - 80);
+  	
+});
+
+
+var el;
+var currentPost = 0;
+
+function toggle() {
+console.log("Toggle");
+	
+}
+
+function showAndHide() {
+	console.log("showandhide");
+	
+}
+
+function slider() {
+	$("#pageWrapper").slideToucher({
+        vertical: true,
+        horizontal: false
+    });
+}
+
+
+function updateSlider() {
+			$("#pageWrapper").slideToucher({
+		        vertical: false,
+		        horizontal: false
+		    });
+		    console.log("uppdaterade slider!");
+		}
+
+
+
+
+
+function grid() {
+	$(".gridBox").click(function() {
+		var s = 0;
+		currentSlide = 0;
+		var id = $(this).attr('id');
+		console.log("klickade på: " +id);
+		var selectedPost = $('#wrapper').find("div#" + id);
+		postInView = $(selectedPost).index();
+		plugin.vertical.currentSlide = postInView+1;
+		console.log("curentslide: " +plugin.vertical.currentSlide)
+		console.log("postInView:" +postInView);
+
+		s = -(plugin.vertical.currentSlide * 640);
+		console.log("s: "+s);
+		
+		$('.current-row').removeClass('current-row');
+		$('#pageWrapper').css('-webkit-transform', 'translate3d(0, '+ s +'px ,0)');
+		
+		$(selectedPost).addClass('current-row');
+		console.log("funkade att klicka!");
+		$("body, #topMenu").animate({
+				backgroundColor: colorsArray[postInView]
+				},1000);
+		$('#grid').fadeOut(1000);
+	  });
+}
+
+
+function notDesktop (){
+	$('#notDesktop').fadeIn(1000, function(){
+		$(this).css('display', 'table');
+	});	
+}
+
+
+function mobile(){
+	postInView = -1;
+	currentScroll = $(window).scrollTop();
+	lastScroll = 40;
+	
+	
+	
+	getLocation ();
+	getDateFormat();
+	$(".div-textarea").width($(window).width() - 70);
+	
+	//$('.div-textarea').height($(window).height() -80);
+	console.log(currentPost);
+	postsArray = new Array();
+	
+	$("body").on("touchmove", false);
+	
+	$('#unsavedPost').keypress(function (e) {
+		if (e.which == 13) {
+		savePost(db);
+		$('#unsavedPost').blur();
+		return false;    //<---- Add this line
+		}
+});
+	
+	
+$(document).scroll(function(){
+	console.log("Scrollade");
+    //currentScrollPosition = $(this).scrollTop();
+});
+
+$("#unsavedPost").focus(function(){
+	console.log("clicka på #unsavedPost");
+    $(document).scrollTop(currentScrollPosition);
+    var e = 0;
+    e = -(plugin.vertical.currentSlide * 640);
+    //console.log("s: " +s);
+    $('#pageWrapper').delay(1000).css('-webkit-transform', 'translate3d(0, 1000px, ,0)');
+    window.scrollTo(0,0);
+    document.body.scrollTop = 0;
+});
+	
+		
+	$("#grid, #menuIcon").click(function() {
+		//$("body").on("touchmove", true);
+	  });
+	 
+	$("#addIcon").click(function() {
+		$('body').scrollTop(0);
+		//$('#unsavedPost').focus();
+	  }); 
+	
+	var pinch = 0;  
+	  
+	$('body').bind('pinch', function(){
+	
+	
+	if ($('#grid').is(":visible") && pinch == 0){
+			pinch = 1;
+			console.log("hide: " +pinch);
+			$('#grid').fadeOut(1000);
+			setTimeout( function() {
+			pinch = 0;
+			console.log("Pinch: " +pinch);
+			}, 1000);
+	}
+	
+	else if (pinch == 0) {
+			pinch = 1;
+			console.log("show: " +pinch);
+			$('#grid').fadeIn(1000);
+			setTimeout( function() {
+			pinch = 0;
+			console.log("Pinch: " +pinch);
+			}, 1000);
+	}	
+		
+	}); 
+
+}
+
+
+$(document).ready(function () {
+   if (window.navigator.standalone) {
+	
+				mobile();
+	
+				} else {
+						//notDesktop();
+						mobile();				
+						}			
+});
+
+
+
+
+
+function scalePosts(){
+	console.log("Scaling posts");
+	$(".div-textarea").width($(window).width() - 70);
+	//$('.div-textarea').height($(window).height() -20);
+}
+
+
+
+function collectPosts (){
+	postsArray = [];
+	$('#wrapper').children().each(function(){
+		postsArray.push(this);
+		//if ($(this).height() >
+	})
+	scrollPoints = $('.div-textarea').height();
+	activePost = 100;
+	console.log("antal posts:" + postsArray.length)
+	console.log("ScrollPoints är:" + scrollPoints);
+	grid();
+}
+
+
+
+function showPosts (){
+	 
+}
+
+function ifPointChanged(){
+	
+}
+
+var scrollToPosition;
+
+
+
+
+
+	
+</script>
+
+
+
+</head>
+<body>
+
+<div id="grid"></div>
+<div id="pageWrapper">
+<div id="unsavedPostWrapper" class="savedPostWrapper">
+	<!--<span id="unsavedPostDate" class="date"></span>-->
+	<div id="unsavedPost" class="div-textarea" maxlength="200" contenteditable="true" placeholder="" onFocus="window.scrollTo(0, 0);"></div>
+</div>
+
+	<div id="wrapper">
+	</div>
+
+</div>
+
+<div id="notDesktop">
+<p>Please open in Safari and <br>add to home screen.</p>
+</div>
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-39577356-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</body>
+</html>
