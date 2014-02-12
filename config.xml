@@ -64,6 +64,7 @@
     <!-- 
         <gap:plugin name="com.phonegap.plugins.barcodescanner" />
     -->
+    <gap:plugin name="com.phonegap.plugin.statusbar" /> 
 
     <!-- Define app icon for each platform. -->
   <!--  <icon src="icon.png" />
