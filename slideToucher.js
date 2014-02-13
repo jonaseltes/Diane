@@ -53,7 +53,7 @@ var currentColor;
         var $slide = plugin.$el.find('.slide');
         var $row = plugin.$el.find('.savedPostWrapper');
 
-        var slideWidth = $slide.eq(0).width();
+        var slideWidth = "";
         var slideHeight = "";
 
         var downX = "";
@@ -79,7 +79,7 @@ var currentColor;
             plugin.options = $.extend({
                 vertical: false,
                 horizontal: true,
-                sliderWidth: $slide.eq(0).outerWidth(true),
+                sliderWidth: '100%',
                 slideTreshold: 15
             }, options);
 

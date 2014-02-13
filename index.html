@@ -34,7 +34,6 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
 <script type="text/javascript" src="slideToucher.js"></script>
-
 <script type="text/javascript" src="phonegap.js"></script>
 
 
@@ -75,7 +74,8 @@ function setBackground (weather) {
 console.log(weather);
 var temperature = weather.temperature;
 console.log("temperature: " +temperature);
-weather = weather.icon
+weather = weather.icon;
+console.log(weather);
 currentWeather = weather;
 currentTemperature = temperature;
 console.log("cuurentTemperature: " +currentTemperature);
@@ -552,7 +552,6 @@ function ReloadPage() {
 
 $(window).resize(function() {
 
-  	$(".div-textarea").width($(window).width() - 80);
   	
 });
 
@@ -648,6 +647,23 @@ function mobile(){
 		$('#unsavedPost').blur();
 		return false;    //<---- Add this line
 		}
+
+
+	var content_id = 'unsavedPost';  
+
+    max = 500;
+
+    //binding keyup/down events on the contenteditable div
+    $('#'+content_id).keydown(function(e){ check_charcount(content_id, max, e); });
+
+    function check_charcount(content_id, max, e)
+    {   
+        if(e.which != 8 && $('#'+content_id).text().length > max)
+        {
+           // $('#'+content_id).text($('#'+content_id).text().substring(0, max));
+            e.preventDefault();
+        }
+    }
 });
 	
 	
@@ -778,7 +794,7 @@ var scrollToPosition;
 <div id="pageWrapper">
 <div id="unsavedPostWrapper" class="savedPostWrapper">
 	<!--<span id="unsavedPostDate" class="date"></span>-->
-	<div id="unsavedPost" class="div-textarea" maxlength="200" contenteditable="true" placeholder="" onFocus="window.scrollTo(0, 0);"></div>
+	<div id="unsavedPost" class="div-textarea" maxlength="10" contenteditable="true" placeholder="" onFocus="window.scrollTo(0, 0);"></div>
 </div>
 
 	<div id="wrapper">

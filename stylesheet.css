@@ -7,7 +7,7 @@ body {font-family: 'Droid Sans', sans-serif;margin: 0;padding: 0;color:#fff;font
 .middle{z-index:10;display:table-cell;vertical-align: middle;}
 .date{font-size: 10px;font-family: 'Droid Sans', sans-serif;font-weight: ;white-space: nowrap;line-height: 16px; text-transform: uppercase; opacity: 0.6; margin-bottom: 30px; padding-top: ; top: ;}
 button {z-index:10;display: table-cell !important;vertical-align: middle !important;border: 3px solid #fff;border-radius: 10px;width: 320px;max-width: 80%;height: 70px;font-size: 1.6em;padding: 0px;margin: 0px;}
-textarea, .div-textarea {border: none !important;width: 100%;height: 500px;min-height: ;word-wrap: normal;word-break: break-word;resize: none;font-size: 14px;line-height: 23px;-webkit-appearance: none;outline:  none !important;letter-spacing: 0.1px; margin-top: 30px;}
+textarea, .div-textarea {border: none !important;width: 100%;height: 400px; z-index: 10; overflow-y:scroll; min-height: ;word-wrap: normal;word-break: break-word;resize: none;font-size: 14px;line-height: 23px;-webkit-appearance: none;outline:  none !important;letter-spacing: 0.1px; margin-top: 30px;}
 [contenteditable="true"], [contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="true"]:hover {border: none !important;outline: none !important;resize: none;}
 #grid{width: 100%;height: 100%;display: none;background: #000;z-index: 4000;position:fixed; top: 0px;}
 .gridBox{width:40px;height: 40px;background-color: #fff;display: inline-block;}
@@ -19,12 +19,12 @@ textarea, .div-textarea {border: none !important;width: 100%;height: 500px;min-h
 
 #wrapper{margin-top: 50px;}
 
-#unsavedPostWrapper {height:; padding-top: ; margin-top: ; margin-bottom: -47px; overflow: hidden;}
+#unsavedPostWrapper {height:; padding-top: ; margin-top: ; margin-bottom: -47px; overflow: none;}
 
 #unsavedPostDate {	margin-top: ;}
 
 
-.savedPostWrapper{display:block; width:100%; height:640px; padding-top: ; padding-left: 35px; margin-top: 0px; overflow: hidden;}
+.savedPostWrapper{display:block; width:100%; height:640px; padding-top: ; padding-left: 35px; margin-top: 0px; overflow: scroll;}
 
 #notDesktop {
 	position: fixed;
@@ -48,13 +48,3 @@ textarea, .div-textarea {border: none !important;width: 100%;height: 500px;min-h
 	-webkit-font-smoothing: antialiased;
 }
 
-@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-	#topMenu #menuIcon {
-		background: url("menu-icon@2x.png") no-repeat;
-		background-size: 21px 21px;
-	}
-	#topMenu #addIcon {
-		background: url("add-icon@2x.png") no-repeat;
-		background-size: 21px 21px;
-	}
-}
