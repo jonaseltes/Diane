@@ -35,6 +35,8 @@
 
 <script type="text/javascript" src="slideToucher.js"></script>
 
+<script type="text/javascript" src="phonegap.js"></script>
+
 
    
 
@@ -706,8 +708,8 @@ $("#unsavedPost").focus(function(){
 
 
 $(document).ready(function () {
-	StatusBar.hide();
-	StatusBar.overlaysWebView(false);
+	//StatusBar.hide();
+	//StatusBar.overlaysWebView(false);
    if (window.navigator.standalone) {
 	
 				mobile();
@@ -719,7 +721,11 @@ $(document).ready(function () {
 });
 
 
+ document.addEventListener("deviceready", onDeviceReady, false);
 
+ function onDeviceReady() {
+            	StatusBar.hide();
+            }
 
 
 function scalePosts(){
