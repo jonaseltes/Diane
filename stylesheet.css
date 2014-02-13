@@ -18,11 +18,13 @@ textarea, .div-textarea {border: none !important;width: 100%;height: 500px;min-h
 #wrapper{width:100%;height:100%;}
 
 #wrapper{margin-top: 50px;}
-#unsavedPostWrapper {height:; padding-top: ; margin-top: ; margin-bottom: -47px;}
+
+#unsavedPostWrapper {height:; padding-top: ; margin-top: ; margin-bottom: -47px; overflow: hidden;}
+
 #unsavedPostDate {	margin-top: ;}
 
 
-.savedPostWrapper{display:block; width:100%; height:640px; padding-top: ; padding-left: 35px; margin-top: 0px; overflow-y: ;}
+.savedPostWrapper{display:block; width:100%; height:640px; padding-top: ; padding-left: 35px; margin-top: 0px; overflow: hidden;}
 
 #notDesktop {
 	position: fixed;
@@ -44,7 +46,7 @@ textarea, .div-textarea {border: none !important;width: 100%;height: 500px;min-h
 	vertical-align: middle;
 	text-align: center;
 	-webkit-font-smoothing: antialiased;
-	}
+}
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
 	#topMenu #menuIcon {
