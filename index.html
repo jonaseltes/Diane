@@ -155,7 +155,7 @@ console.log("cuurentTemperature: " +currentTemperature);
 function loadUnsavedPost (){
 	
 	$('#log').append('Done');
-	$('#log').fadeOut('slow');
+	$('#log').delay(1000).fadeOut('slow');
 	
 
 	var time = formatAMPM(currentDate);	
@@ -165,7 +165,7 @@ function loadUnsavedPost (){
 				backgroundColor: currentColor
 				},2000);
 
-	$('#log').remove();
+	//$('#log').remove();
 				
 	window.setTimeout(function () {
 	    $('#unsavedPost').animate({'opacity': 0}, 1000, function () {
