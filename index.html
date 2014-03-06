@@ -16,6 +16,7 @@
 <!--<link rel="apple-touch-startup-image" href="startup.png">-->
 <!--<link href="startup.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">-->
 
+
 <title>Diane</title>
 
 <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
@@ -155,13 +156,16 @@ function loadUnsavedPost (){
 	
 	$('#log').append('Done');
 	$('#log').fadeOut('slow');
-	$('#log').remove();
+	
 
 	var time = formatAMPM(currentDate);	
+
 	
-	$("body, #topMenu").animate({
+	$("body, #topMenu").delay(1000).animate({
 				backgroundColor: currentColor
-				},1000);
+				},2000);
+
+	$('#log').remove();
 				
 	window.setTimeout(function () {
 	    $('#unsavedPost').animate({'opacity': 0}, 1000, function () {
