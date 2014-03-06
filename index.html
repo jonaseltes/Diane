@@ -72,6 +72,7 @@ var currentScrollPosition = 0;
 
 function setBackground (weather) {
 console.log(weather);
+$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
 var temperature = weather.temperature;
 console.log("temperature: " +temperature);
 weather = weather.icon;
@@ -152,7 +153,9 @@ console.log("cuurentTemperature: " +currentTemperature);
 
 function loadUnsavedPost (){
 	
-	
+	$('#log').append('Done');
+	$('#log').fadeOut('slow');
+	$('#log').remove();
 
 	var time = formatAMPM(currentDate);	
 	
@@ -173,12 +176,13 @@ function loadUnsavedPost (){
 
 function readWeather (json) {
 	console.log("tolkar väder");
+	$('#log').append('Reading weather data...<br>');
 	setBackground (json.currently);
 }
 
 
 function findLocation () {
-
+	$('#log').append('Loading location from Google Maps...<br>');
 	geocoder = new google.maps.Geocoder();
 	
 	console.log("testar currentPosition.coords.latitude:" +currentPosition.coords.latitude);
@@ -190,6 +194,7 @@ function findLocation () {
         if (results[1]) {
          //formatted address
          console.log(results[0].formatted_address);
+         $('#log').append('Location: '+results[0].formatted_address+'<br>');
          currentLocation = results[0].formatted_address;
         //find country name
              for (var i=0; i<results[0].address_components.length; i++) {
@@ -224,6 +229,8 @@ function getWeather (position) {
 
 	console.log(position);
 	currentPosition = position;
+	$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
+	$('#log').append('Getting weather data...<br>');
 	
 	$.ajax({
 	  dataType: "jsonp",
@@ -237,13 +244,13 @@ function getWeather (position) {
 function getLocation () {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(getWeather);
+		$('#log').append('Loading position data...<br>');
 	}
 	
 	/*else {
 	
 			window.setTimeout(function () {
 			    $('#unsavedPost').animate({'opacity': 0}, 1000, function () {
-			    console.log("months[currentDate.getMonth()]: " +months[currentDate.getMonth()]);
 			    $('#unsavedPostWrapper').prepend('<p class="div-textarea">Sorry, Diane needs your location in order to run. Please go to your iPhones location settings and turn on Diane.</div></div>');	    
 			}).animate({'opacity': 1}, 1000);
 			},200);
@@ -625,6 +632,7 @@ function notDesktop (){
 
 
 function mobile(){
+	$('#log').append('Initializing...<br>');
 	postInView = -1;
 	currentScroll = $(window).scrollTop();
 	lastScroll = 40;
@@ -792,6 +800,7 @@ var scrollToPosition;
 
 <div id="grid"></div>
 <div id="pageWrapper">
+<div id="log"></div>
 <div id="unsavedPostWrapper" class="savedPostWrapper">
 	<!--<span id="unsavedPostDate" class="date"></span>-->
 	<div id="unsavedPost" class="div-textarea" maxlength="10" contenteditable="true" placeholder="" onFocus="window.scrollTo(0, 0);"></div>
