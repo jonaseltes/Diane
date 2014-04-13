@@ -226,9 +226,11 @@ function findLocation () {
  
         } else {
           alert("No results found");
+          setBackground (null);
         }
       } else {
         alert("Geocoder failed due to: " + status);
+        setBackground (null);
       }
    	
 	
