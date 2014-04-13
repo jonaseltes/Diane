@@ -734,7 +734,6 @@ $("#unsavedPost").focus(function(){
 
 
 $(document).ready(function () {
-	navigator.splashscreen.hide();
 	//StatusBar.hide();
 	//StatusBar.overlaysWebView(false);
    if (window.navigator.standalone) {
@@ -752,6 +751,10 @@ $(document).ready(function () {
 
  function onDeviceReady() {
             	StatusBar.hide();
+            	setTimeout(function(){
+            		navigator.splashscreen.hide();
+            	},1000);
+            	
             	//navigator.splashscreen.show();
             	
             	console.log("Device Ready!");
