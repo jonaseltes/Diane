@@ -137,11 +137,13 @@ console.log("cuurentTemperature: " +currentTemperature);
 		currentColor = '#5A302A';
 		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
 	}
+
 	
-	/*else {
+	
+	else {
 		//currentColor = '#778abf';
-		currentColor = '#4100fa';
-	}*/
+		currentColor = '#000000';
+	}
 	
 	console.log("currentColor:" + currentColor);
 	
@@ -249,16 +251,11 @@ function getLocation () {
 		$('#log').append('Loading position data...<br>');
 	}
 	
-	/*else {
+	else {
 	
-			window.setTimeout(function () {
-			    $('#unsavedPost').animate({'opacity': 0}, 1000, function () {
-			    $('#unsavedPostWrapper').prepend('<p class="div-textarea">Sorry, Diane needs your location in order to run. Please go to your iPhones location settings and turn on Diane.</div></div>');	    
-			}).animate({'opacity': 1}, 1000);
-			},200);
-		}
+			setBackground (null);
 	
-	}*/
+	}
 }
 
 function formatAMPM(date) {
@@ -362,9 +359,17 @@ function singleDataSelectHandler(transaction, results){
         colorsArray.unshift(post.bgcolor);
         
         var time = formatAMPM(newDate);
+
+        if (!post.location) {
+        	$('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">N/A<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
+        	$('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+        }
+
+        else {
         
         $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature +'° '+ post.location +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
         $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+    	}
         
        //console.log(+ post.id + post.content + post.bgcolor + post.weather + post.date +);
        collectPosts ();
@@ -409,9 +414,16 @@ function dataSelectHandler(transaction, results){
         
         var time = formatAMPM(newDate);
         
+        if (!post.location) {
+        	$('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">N/A<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
+        	$('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+        }
+
+        else {
+        
         $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature +'° '+ post.location +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
-        //$('#grid').prepend('<a href="#'+post.id+'"><div class="gridBox" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div></a>');
         $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+    	}
        
        	//showAndHide(); 
     }
@@ -506,7 +518,7 @@ function createTables(db)
 	console.log("skapar table");
 	db.transaction(
         function (transaction) {
-        	transaction.executeSql('CREATE TABLE IF NOT EXISTS posts(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, bgcolor TEXT NOT NULL, weather TEXT, date TEXT, temperature TEXT NOT NULL, location TEXT NOT NULL);', [], nullDataHandler, errorHandler);
+        	transaction.executeSql('CREATE TABLE IF NOT EXISTS posts(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, bgcolor TEXT NOT NULL, weather TEXT, date TEXT, temperature TEXT, location TEXT);', [], nullDataHandler, errorHandler);
         });
         
     //prePopulate(db);
