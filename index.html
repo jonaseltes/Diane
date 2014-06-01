@@ -21,19 +21,7 @@
 <link href='stylesheet.css' rel='stylesheet' type='text/css'>
 
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
-<!--<script type="text/javascript" src="jquery-1.8.3.min.js"></script>-->
 
-<script type="text/javascript" src="https://rawgithub.com/jquery/jquery-color/master/jquery.color.js"></script>
-<script type="text/javascript" src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
-<script type="text/javascript" src="jgestures.min.js"></script>
-
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-
-<script type="text/javascript" src="slideToucher.js"></script>
-<script type="text/javascript" src="phonegap.js"></script>
 
 
    
@@ -70,79 +58,116 @@ var currentScrollPosition = 0;
 
 
 function setBackground (weather) {
-console.log(weather);
-$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
-var temperature = weather.temperature;
-console.log("temperature: " +temperature);
-weather = weather.icon;
-console.log(weather);
-currentWeather = weather;
-currentTemperature = temperature;
-console.log("cuurentTemperature: " +currentTemperature);
-
-	colors = new Array(8);
-	colors[0] = "#ACD9D1";
-	colors[1] = "#3DD2DA";
-	colors[2] = "#AF8E93";
-	colors[3] = "#FF9E8A";
-	colors[4] = "#364542";
-	colors[5] = "#0E4345";
-	colors[6] = "#362A2A";
-	colors[7] = "#5A302A";
-	
-	var randomColor = Math.floor(Math.random() * 7) + 0;
 
 
-	if (weather == "clear-day") {
-		currentColor = '#ACD9D1';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "clear-night") {
-		currentColor = '#3DD2DA';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "rain") {
-		currentColor = '#AF8E93';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "snow") {
-		currentColor = '#FF9E8A';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "sleet") {
-		currentColor = '#FF9E8A';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "wind") {
-		currentColor = '#364542';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "cloudy") {
-		currentColor = '#0E4345';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "partly-cloudy-day") {
-		currentColor = '#362A2A';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	if (weather == "partly-cloudy-night") {
-		currentColor = '#5A302A';
-		//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-	}
-	
-	
 	if (!weather) {
 		//currentColor = '#778abf';
 		currentColor = '#000000';
 	}
+
+	else {
+
+		console.log(weather);
+		$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
+		var temperature = weather.temperature;
+		console.log("temperature: " +temperature);
+		weather = weather.icon;
+		console.log(weather);
+		currentWeather = weather;
+		currentTemperature = temperature;
+
+		var date = new Date();
+
+		var R = 140;
+		var G = 140;
+		var B = 140;
+
+		
+
+
+		console.log("cuurentTemperature: " +currentTemperature);
+
+			colors = new Array(8);
+			colors[0] = "#ACD9D1";
+			colors[1] = "#3DD2DA";
+			colors[2] = "#AF8E93";
+			colors[3] = "#FF9E8A";
+			colors[4] = "#364542";
+			colors[5] = "#0E4345";
+			colors[6] = "#362A2A";
+			colors[7] = "#5A302A";
+			
+			var randomColor = Math.floor(Math.random() * 7) + 0;
+
+			var time = formatAMPM(newDate);
+
+
+			if (weather == "clear-day") {
+				currentColor = '#ACD9D1';
+				R = 61;
+				G = 210;
+				B = 218;
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+			if (weather == "clear-night") {
+				currentColor = '#3DD2DA';
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+				R = 172;
+				G = 217;
+				B = 209;
+			}
+			
+			if (weather == "rain") {
+				currentColor = '#AF8E93';
+				R = 164;
+				G = 183;
+				B = 180;
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+			if (weather == "snow") {
+				currentColor = '#FF9E8A';
+				R = 157;
+				G = 198;
+				B = 202;
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+			if (weather == "sleet") {
+				currentColor = '#FF9E8A';
+				R = 158;
+				G = 171;
+				B = 172;
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+			/*if (weather == "wind") {
+				currentColor = '#364542';
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}*/
+			
+			if (weather == "cloudy") {
+				currentColor = '#0E4345';
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+			if (weather == "partly-cloudy-day") {
+				currentColor = '#362A2A';
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+			if (weather == "partly-cloudy-night") {
+				currentColor = '#5A302A';
+				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+			}
+			
+
+	}
+
+
+	
+	
 	
 	console.log("currentColor:" + currentColor);
 	
@@ -226,11 +251,11 @@ function findLocation () {
  
         } else {
           alert("No results found");
-          setBackground (null);
+          setBackground ();
         }
       } else {
         alert("Geocoder failed due to: " + status);
-        setBackground (null);
+        setBackground ();
       }
    	
 	
@@ -263,7 +288,7 @@ function getLocation () {
 	
 	else {
 	
-			setBackground (null);
+			setBackground ();
 	
 	}
 }
@@ -829,23 +854,37 @@ var scrollToPosition;
 </head>
 <body>
 
-<div id="grid"></div>
-<div id="pageWrapper">
-<div id="log"></div>
-<div id="unsavedPostWrapper" class="savedPostWrapper">
-	<!--<span id="unsavedPostDate" class="date"></span>-->
-	<div id="unsavedPost" class="div-textarea" maxlength="10" contenteditable="true" placeholder="" onFocus="window.scrollTo(0, 0);"></div>
-</div>
-
-	<div id="wrapper">
+	<div id="grid"></div>
+	<div id="pageWrapper">
+	<div id="log"></div>
+	<div id="unsavedPostWrapper" class="savedPostWrapper">
+		<!--<span id="unsavedPostDate" class="date"></span>-->
+		<div id="unsavedPost" class="div-textarea" maxlength="10" contenteditable="true" placeholder="" onFocus="window.scrollTo(0, 0);"></div>
 	</div>
 
-</div>
+		<div id="wrapper">
+		</div>
 
-<div id="notDesktop">
-<p>Please open in Safari and <br>add to home screen.</p>
-</div>
+	</div>
 
+	<div id="notDesktop">
+	<p>Please open in Safari and <br>add to home screen.</p>
+	</div>
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<!--<script type="text/javascript" src="jquery-1.8.3.min.js"></script>-->
+
+<script type="text/javascript" src="https://rawgithub.com/jquery/jquery-color/master/jquery.color.js"></script>
+<script type="text/javascript" src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
+<script type="text/javascript" src="jgestures.min.js"></script>
+
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="slideToucher.js"></script>
+<script type="text/javascript" src="phonegap.js"></script>
 
 
 <script type="text/javascript">
