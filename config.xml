@@ -38,8 +38,8 @@
     <preference name="android-minSdkVersion"      value="7" />              <!-- android: MIN SDK version supported on the target device. MAX version is blank by default. -->
     <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 
     'preferExternal' is SDCard. -->
-    <preference name="FadeSplashScreen" value="true"/>
-    <preference name="FadeSplashScreenDuration" value="2"/>
+    <!--<preference name="FadeSplashScreen" value="true"/>-->
+    <!--<preference name="FadeSplashScreenDuration" value="2"/>-->
 
     <!-- Plugins -->
 

@@ -35,7 +35,8 @@
 
 
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="jquery.min.js"></script>
+
 <!--<script type="text/javascript" src="jquery-1.8.3.min.js"></script>-->
 
 <script type="text/javascript" src="https://rawgithub.com/jquery/jquery-color/master/jquery.color.js"></script>
@@ -53,6 +54,20 @@
 
 
 <script type="text/javascript">
+
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+ function onDeviceReady() {
+            	StatusBar.hide();
+            	setTimeout(function(){
+            		navigator.splashscreen.hide();
+            	},100);
+            	
+            	//navigator.splashscreen.show();
+            	
+            	console.log("Device Ready!");
+            }
 
 var db;
 var colorsArray;
@@ -820,18 +835,7 @@ $(document).ready(function () {
 });
 
 
- document.addEventListener("deviceready", onDeviceReady, false);
-
- function onDeviceReady() {
-            	StatusBar.hide();
-            	setTimeout(function(){
-            		navigator.splashscreen.hide();
-            	},100);
-            	
-            	//navigator.splashscreen.show();
-            	
-            	console.log("Device Ready!");
-            }
+ 
 
 
 function scalePosts(){
