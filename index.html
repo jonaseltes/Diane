@@ -74,7 +74,6 @@ var colorsArray;
 var postsArray;
 var currentWeather;
 var currentDate;
-var currentColor;
 var months;
 var colors;
 var activePost;
@@ -92,12 +91,255 @@ var currentPosition;
 var geocoder;
 var currentLocation;
 var currentScrollPosition = 0;
+var currentColor = jQuery.Color( "#000000" );
+var sunriseColor = jQuery.Color( "#64f1d5" );
+var lateMorningColor = jQuery.Color( "#50dce5" );
+var middayColor = jQuery.Color( "#56ddac" );
+var afternoonColor = jQuery.Color( "#56dd7f" );
+var eveningColor = jQuery.Color( "#dd8956" );
+var sunsetColor = jQuery.Color( "#dd8956" );
+var midnightColor = jQuery.Color( "#373d45" );
+
+var satValue;
+var hueValue;
+var lightValue;
+var weatherString;
+
+
+function timeConverter(UNIX_timestamp){
+ var a = new Date(UNIX_timestamp*1000);
+     var year = a.getFullYear();
+     var month = months[a.getMonth()];
+     var date = a.getDate();
+     var hour = a.getHours();
+     var min = a.getMinutes();
+     var sec = a.getSeconds();
+     var time = date + ',' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+     return a;
+ }
+
+
+
+function temperatureVariable () {
+
+	if (currentTemperature < 50) {
+	}
+
+	if (currentTemperature < 45) {
+	}
+
+	if (currentTemperature < 40) {
+	}
+
+	if (currentTemperature < 35) {
+	}
+
+	if (currentTemperature < 30) {
+	}
+
+	if (currentTemperature < 25) {
+	}
+
+	if (currentTemperature < 20) {
+		
+	}
+
+	if (currentTemperature < 15) {
+	}
+
+	if (currentTemperature < 10) {
+	}
+
+	if (currentTemperature < 5) {
+	}
+
+	if (currentTemperature < 0) {
+	}
+
+	if (currentTemperature < -5) {
+	}
+
+
+	if (currentTemperature < -10) {
+	}
+
+	if (currentTemperature < -15) {
+	}
+
+	if (currentTemperature < -20) {
+	}
+
+	if (currentTemperature < -25) {
+	}
+
+}
+
+
+
+function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
+
+		var diffMsFull = (secondDate - firstDate); // milliseconds between sunrise & now
+		var diffMsRelative = (currentDate - firstDate);
+		var diffMinsFull = Math.floor((diffMsFull/1000)/60);
+		var diffMinsRelative = Math.floor((diffMsRelative/1000)/60);
+
+		console.log("diffMinsFull: "+diffMinsFull);
+		console.log("diffMinsRelative: "+diffMinsRelative);
+
+		var S = $.Color(firstColor).saturation();		
+		var H = $.Color(firstColor).hue();
+		var L = $.Color(firstColor).lightness();
+
+		var hueVariable = ( $.Color(secondColor).hue() - $.Color(firstColor).hue() )/diffMinsFull;
+		var lightVariable = ( $.Color(secondColor).lightness() - $.Color(firstColor).lightness() )/diffMinsFull;
+		var satVariable = ( $.Color(secondColor).saturation() - $.Color(firstColor).saturation() )/diffMinsFull;
+
+		satValue = S+satVariable*diffMinsRelative;
+		hueValue = H+hueVariable*diffMinsRelative;
+		lightValue = L+lightVariable*diffMinsRelative;
+
+}
 
 
 
 
+function timeOfDay (sunrise, sunset) {
 
-function setBackground (weather) {
+
+	currentDate.setHours(currentDate.getHours()+2);
+	console.log("New currentDate is:" +currentDate);
+	console.log("sunrise: " +sunrise);
+	console.log("sunset: " +sunset);
+	console.log("calculating time of day");
+
+
+	//Creating midday date
+
+	var midday = new Date(currentDate);
+	midday.setHours((sunset.getHours()+sunrise.getHours())/2);
+	midday.setMinutes((sunset.getMinutes()+sunrise.getMinutes())/2);
+	midday.setSeconds((sunset.getSeconds()+sunrise.getSeconds())/2);
+	console.log("Midday: " +midday);
+
+
+
+
+	if ((( currentDate.getHours() > sunrise.getHours() ) && ( currentDate.getHours() < midday.getHours() )) || ( (( currentDate.getHours() == sunrise.getHours() ) && (currentDate.getMinutes() > sunrise.getMinutes() )) || (( currentDate.getHours() == midday.getHours() ) && (currentDate.getMinutes() < midday.getMinutes() )) ) ) {
+		var lateMorning  = new Date(sunrise);
+		lateMorning.setHours((sunrise.getHours()+midday.getHours())/2);
+		lateMorning.setMinutes((sunrise.getMinutes()+midday.getMinutes())/2);
+		lateMorning.setSeconds((sunrise.getSeconds()+midday.getSeconds())/2);
+		console.log("lateMorning: " +lateMorning);
+
+		if ((currentDate.getHours() < lateMorning.getHours()) || ((currentDate.getHours() == lateMorning.getHours() ) && (currentDate.getMinutes() < lateMorning.getMinutes()))) {
+			getCoreColor (sunrise, lateMorning, sunriseColor, lateMorningColor);
+			return "early morning";
+		}
+
+		else {
+			getCoreColor (lateMorning, midday, lateMorningColor, middayColor);
+			return "late morning";
+		}
+	}
+
+
+	/*if (currentDate > sunrise && currentDate < midday) {
+		var lateMorning  = new Date(sunrise);
+		lateMorning.setHours((sunrise.getHours()+midday.getHours())/2);
+		lateMorning.setMinutes((sunrise.getMinutes()+midday.getMinutes())/2);
+		lateMorning.setSeconds((sunrise.getSeconds()+midday.getSeconds())/2);
+		console.log("lateMorning: " +lateMorning);
+
+		if (currentDate < lateMorning) {
+			getCoreColor (sunrise, lateMorning, sunriseColor, lateMorningColor);
+			return "early morning";
+		}
+
+		else {
+			getCoreColor (lateMorning, midday, lateMorningColor, middayColor);
+			return "late morning";
+		}
+	}*/
+
+
+	if ((( currentDate.getHours() > midday.getHours() ) && ( currentDate.getHours() < sunset.getHours() )) || ( (( currentDate.getHours() == midday.getHours() ) && (currentDate.getMinutes() > midday.getMinutes() )) || (( currentDate.getHours() == sunset.getHours() ) && (currentDate.getMinutes() < sunset.getMinutes() )) ) ) {
+		
+		var eveningStart = new Date(midday);
+		eveningStart.setHours((midday.getHours()+sunset.getHours())/2);
+		eveningStart.setMinutes((midday.getMinutes()+sunset.getMinutes())/2);
+		eveningStart.setSeconds((midday.getSeconds()+sunset.getSeconds())/2);
+		console.log("eveningStart: " +eveningStart);
+
+		if ((currentDate.getHours() < eveningStart.getHours()) || ((currentDate.getHours() == eveningStart.getHours() ) && (currentDate.getMinutes() < eveningStart.getMinutes()))) {
+			getCoreColor (midday, eveningStart, middayColor, eveningColor);
+			return "afternoon";
+		}
+
+		else {
+			getCoreColor (eveningStart, sunset, eveningColor, sunsetColor);
+			return "evening";
+		}
+	}
+
+	
+
+	
+
+	//NIGHT
+	if ((( currentDate.getHours() > sunset.getHours() ) || ( currentDate.getHours() < sunrise.getHours() )) || ( (( currentDate.getHours() == sunset.getHours() ) && (currentDate.getMinutes() > sunset.getMinutes() )) || (( currentDate.getHours() == sunrise.getHours() ) && (currentDate.getMinutes() < sunset.getMinutes() )) ) ) {
+
+
+		var midnight;
+
+
+		if (sunset.getHours() > sunrise.getHours()) {
+			console.log("sunset is before 00:00");
+			if (((currentDate.getHours() <= 23) && (currentDate.getHours() >= sunrise.getHours())) && (sunset.getDate() != currentDate.getDate())) {
+				sunset.setDate(currentDate.getDate());
+			}
+
+			else {
+				sunset.setDate(currentDate.getDate()-1);
+			}
+			console.log("new sunset: " +sunset);
+			midnight = new Date(sunset);
+			midnight.setHours(sunset.getHours()+(((23-sunset.getHours())+sunrise.getHours())/2));
+		}
+
+		else {
+			if (sunset.getDate() != currentDate.getDate()){
+				sunset.setDate(currentDate.getDate());
+			}
+			midnight = new Date(sunset);
+			midnight.setHours((sunset.getHours()+sunrise.getHours())/2);
+		}
+
+
+		midnight.setMinutes((sunset.getMinutes()+sunrise.getMinutes())/2);
+		midnight.setSeconds((sunset.getSeconds()+sunrise.getSeconds())/2);
+
+		console.log("midnight: " +midnight);
+
+		if ((currentDate.getHours() < midnight.getHours()) || ((currentDate.getHours() == midnight.getHours() ) && (currentDate.getMinutes() < midnight.getMinutes()))) {
+			getCoreColor (sunset, midnight, sunsetColor, midnightColor);
+			return "late evening";
+		}
+
+		else {
+			getCoreColor (midnight, sunrise, midnightColor, sunriseColor);
+			return "night";
+		}
+
+	}
+
+
+
+}
+
+
+
+function setBackground (weather, daily) {
+
 
 
 	if (!weather) {
@@ -106,8 +348,22 @@ function setBackground (weather) {
 	}
 
 	else {
+		
+		console.log("daily: " ,daily);
 
-		console.log(weather);
+
+		var sunrise = timeConverter(daily.data[0].sunriseTime);
+		var sunset = timeConverter(daily.data[0].sunsetTime);
+		console.log("weather: " ,weather);
+		
+
+		var temperatureMin = daily.data[0].temperatureMin;
+		var temperatureMax = daily.data[0].temperatureMax;
+		var stageOfDay = timeOfDay(sunrise, sunset, weather);
+		console.log("temperatureMin: "+temperatureMin);
+		console.log("temperatureMax: "+temperatureMax);
+		console.log("stageOfDay: " +stageOfDay);
+
 		$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
 		var temperature = weather.temperature;
 		console.log("temperature: " +temperature);
@@ -116,13 +372,9 @@ function setBackground (weather) {
 		currentWeather = weather;
 		currentTemperature = temperature;
 
-		var date = new Date();
-
 		var R = 140;
 		var G = 140;
 		var B = 140;
-
-		
 
 
 		console.log("cuurentTemperature: " +currentTemperature);
@@ -141,73 +393,85 @@ function setBackground (weather) {
 
 			//var time = formatAMPM(newDate);
 
+			/*currentColor = '#5ce5a1';
+			currentColor = jQuery.Color( "#5ce5a1" );
+			var satValue = $.Color(currentColor).saturation();
+			var hueValue = $.Color(currentColor).hue();
+			var lightValue = $.Color(currentColor).lightness();
+			console.log("saturation: " + $.Color(currentColor).saturation());*/
 
-			if (weather == "clear-day") {
-				currentColor = '#ACD9D1';
+
+
+			/*if (weather == "clear-day") {
+				currentColor = '#5ce5a1';
 				R = 61;
 				G = 210;
 				B = 218;
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-			}
+			}*/
 			
-			if (weather == "clear-night") {
+			/*if (weather == "clear-night") {
 				currentColor = '#3DD2DA';
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
 				R = 172;
 				G = 217;
 				B = 209;
-			}
+			}*/
 			
 			if (weather == "rain") {
-				currentColor = '#AF8E93';
-				R = 164;
-				G = 183;
-				B = 180;
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+				//satValue -= 0.2;
 			}
 			
 			if (weather == "snow") {
-				currentColor = '#FF9E8A';
+				//currentColor = '#FF9E8A';
 				R = 157;
 				G = 198;
 				B = 202;
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+				//satValue -= 0.2;
 			}
 			
 			if (weather == "sleet") {
-				currentColor = '#FF9E8A';
+				//currentColor = '#FF9E8A';
 				R = 158;
 				G = 171;
 				B = 172;
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+				//satValue -= 0.2;
+			}
+
+			if (weather == "fog") {
+				//currentColor = '#FF9E8A';
+				R = 158;
+				G = 171;
+				B = 172;
+				//satValue -= 0.2;
 			}
 			
 			/*if (weather == "wind") {
 				currentColor = '#364542';
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
 			}*/
 			
 			if (weather == "cloudy") {
-				currentColor = '#0E4345';
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
+				//currentColor = '#0E4345';
 			}
 			
-			if (weather == "partly-cloudy-day") {
+			/*if (weather == "partly-cloudy-day") {
 				currentColor = '#362A2A';
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
 			}
 			
 			if (weather == "partly-cloudy-night") {
 				currentColor = '#5A302A';
-				//currentColor = colors[Math.floor(Math.random() * 8) + 1];
-			}
-			
+			}*/
+
+
+		console.log("hue: "+hueValue);
+		console.log("saturation: "+satValue);
+		console.log("lightness: "+lightValue);
+
+		currentColor = jQuery.Color({ hue: hueValue, saturation: satValue, lightness: lightValue, alpha: 1 });
 
 	}
 
 
-	
-	
+
+
 	
 	console.log("currentColor:" + currentColor);
 	
@@ -254,7 +518,7 @@ function loadUnsavedPost (){
 function readWeather (json) {
 	console.log("tolkar väder");
 	$('#log').append('Reading weather data...<br>');
-	setBackground (json.currently);
+	setBackground (json.currently, json.daily);
 }
 
 
@@ -386,8 +650,6 @@ function errorHandler(transaction, error){
 
 
 function selectAll(db){
-
-
 	db.transaction(
 	    function (transaction) {
 	        transaction.executeSql("SELECT * FROM posts;", [],
@@ -594,8 +856,9 @@ function createTables(db)
 	db.transaction(
         function (transaction) {
         	transaction.executeSql('CREATE TABLE IF NOT EXISTS posts(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, content TEXT NOT NULL, bgcolor TEXT NOT NULL, weather TEXT, date TEXT, temperature TEXT, location TEXT);', [], nullDataHandler, errorHandler);
-        });
-        
+        }
+    );
+    selectAll(db);
     //prePopulate(db);
 }
 
@@ -612,11 +875,9 @@ function initDatabase() {
 		        var shortName = 'dianedb';
 		        var version = '1.0';
 		        var displayName = 'Diane';
-		        var maxSize = 65536; // in bytes
+		        var maxSize = 65537; // in bytes
 		        db = openDatabase(shortName, version, displayName, maxSize);
-		        console.log("databas skapades");
-		  
-		        //
+		        //console.log("databas skapades");
 		        // You should have a database instance in db.
 		    }
 		} catch(e) {
@@ -632,7 +893,6 @@ function initDatabase() {
 		 
 		console.log("Database is: "+db);
 		createTables(db);
-		selectAll(db);
 		//deletePost(db);
 		//dropTables(db);
 }
