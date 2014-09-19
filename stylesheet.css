@@ -16,6 +16,11 @@ body {
 	-webkit-font-smoothing:antialiased;
 	overflow: ; 
 	padding-top: 40px;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	position: fixed;
 }
 
 
@@ -138,10 +143,11 @@ textarea, .div-textarea {
 }
 
 #pageWrapper{
-	position: fixed;
+	position: absolute;
 	z-index:0;
 	width:100%;
-	height:100%;
+	height: 100%;
+	display: block;
 	-webkit-transform: translate3d(0, 0, 0);
 	-webkit-transition-timing-function: linear;
 	-webkit-backface-visibility: hidden;
@@ -158,12 +164,11 @@ textarea, .div-textarea {
 
 #wrapper{
 	width:100%;
-	height:100%;
-}
-
-#wrapper{
+	height: 100%;
 	margin-top: 50px;
 }
+
+
 
 #unsavedPostWrapper {
 	height:;
@@ -182,8 +187,10 @@ textarea, .div-textarea {
 	height:640px;
 	padding-top: ;
 	padding-left: 35px;
+	box-sizing: border-box;
 	margin-top: 0px;
-	overflow: scroll;
+	overflow: hidden;
+	position: ;
 }
 
 #notDesktop {
