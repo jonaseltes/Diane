@@ -638,19 +638,22 @@ function getWeather (position) {
 }
 
 function locationError (error) {
-	setBackground ();
 	switch(error.code) {
         case error.PERMISSION_DENIED:
         	$('#log').append('User denied the request for Geolocation.<br>');
+        	setBackground ();
             break;
         case error.POSITION_UNAVAILABLE:
         	$('#log').append('Location information is unavailable.<br>');
+        	setBackground ();
             break;
         case error.TIMEOUT:
         	$('#log').append('Failed to load location data...<br>');
+        	setBackground ();
             break;
         case error.UNKNOWN_ERROR:
         	$('#log').append('Failed to load location data...<br>');
+        	setBackground ();
             break;
     }
 }
