@@ -55,6 +55,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
             	setTimeout(function(){
             		navigator.splashscreen.hide();
             	},100);
+            	checkConnection();
 
             	//navigator.geolocation.getCurrentPosition(getWeather, onError);
             	
@@ -62,6 +63,22 @@ document.addEventListener("deviceready", onDeviceReady, false);
             	
             	console.log("Device Ready!");
             }
+
+
+function checkConnection() {
+    var networkState = navigator.network.connection.type;
+
+    var states = {};
+    states[Connection.UNKNOWN]  = 'Unknown connection';
+    states[Connection.ETHERNET] = 'Ethernet connection';
+    states[Connection.WIFI]     = 'WiFi connection';
+    states[Connection.CELL_2G]  = 'Cell 2G connection';
+    states[Connection.CELL_3G]  = 'Cell 3G connection';
+    states[Connection.CELL_4G]  = 'Cell 4G connection';
+    states[Connection.NONE]     = 'No network connection';
+
+    alert('Connection type: ' + states[networkState]);
+}
 
 
 
