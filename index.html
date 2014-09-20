@@ -56,7 +56,7 @@ document.addEventListener("deviceready", onDeviceReady, false);
             		navigator.splashscreen.hide();
             	},100);
 
-            	navigator.geolocation.getCurrentPosition(getWeather, onError);
+            	//navigator.geolocation.getCurrentPosition(getWeather, onError);
             	
             	//navigator.splashscreen.show();
             	
@@ -593,7 +593,7 @@ function findLocation () {
 
 function getWeather (position) {
 
-	location = true;
+	//location = true;
 
 	$('#log').append('Loading position data...<br>');
 
@@ -604,6 +604,7 @@ function getWeather (position) {
 
 	console.log(position);
 	currentPosition = position;
+	//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
 	$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
 	$('#log').append('Getting weather data...<br>');
 	
@@ -616,19 +617,38 @@ function getWeather (position) {
 	findLocation();
 }
 
+function (error) {
+	setBackground ();
+	switch(error.code) {
+        case error.PERMISSION_DENIED:
+        	$('#log').append('User denied the request for Geolocation.<br>');
+            break;
+        case error.POSITION_UNAVAILABLE:
+        	$('#log').append('Location information is unavailable.<br>');
+            break;
+        case error.TIMEOUT:
+        	$('#log').append('Failed to load location data...<br>');
+            break;
+        case error.UNKNOWN_ERROR:
+        	$('#log').append('Failed to load location data...<br>');
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
+}
+
 function getLocation () {
-	if (!location) {
+	//if (!location) {
 
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(getWeather);
 			$('#log').append('Loading position data...<br>');
+			navigator.geolocation.getCurrentPosition(getWeather, locationError);
 		}
 		
 		else {
 			setBackground ();
 		}
 
-	}
+	//}
 }
 
 function formatAMPM(date) {
