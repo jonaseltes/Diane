@@ -617,7 +617,7 @@ function getWeather (position) {
 	findLocation();
 }
 
-function (error) {
+function locationError (error) {
 	setBackground ();
 	switch(error.code) {
         case error.PERMISSION_DENIED:
@@ -631,7 +631,6 @@ function (error) {
             break;
         case error.UNKNOWN_ERROR:
         	$('#log').append('Failed to load location data...<br>');
-            x.innerHTML = "An unknown error occurred."
             break;
     }
 }
