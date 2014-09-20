@@ -368,10 +368,11 @@ function timeOfDay (sunrise, sunset) {
 
 function setBackground (weather, daily) {
 
+	$('#log').append('Reading weather data... <br>');
 
-
-	if (!weather) {
+	if (typeof weather === 'undefined') {
 		//currentColor = '#778abf';
+		$('#log').append('Failed to load weather data... <br>');
 		currentColor = '#000000';
 	}
 
@@ -605,7 +606,7 @@ function getWeather (position) {
 
 	//location = true;
 
-	$('#log').append('Loading position data...<br>');
+	//$('#log').append('Loading position data...<br>');
 
 		
 		if (typeof position !== 'undefined') {
