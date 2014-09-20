@@ -308,6 +308,11 @@ function timeOfDay (sunrise, sunset) {
 				console.log("new sunset: " +sunset);
 			}
 
+			else {
+				sunset.setDate(currentDate.getDate()-1);
+				console.log("new sunset: " +sunset);
+			}
+
 			midnight = new Date(sunset);
 			midnight.setHours(sunset.getHours()+(((23-sunset.getHours())+sunrise.getHours())/2));
 		}
@@ -597,12 +602,8 @@ function getWeather (position) {
 
 	$('#log').append('Loading position data...<br>');
 
-	if (!position) {
-		$('#log').append('Failed to load location data...<br>');
-		setBackground ();
-	}
+	
 
-	else {
 		console.log(position);
 		currentPosition = position;
 		//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
@@ -611,12 +612,12 @@ function getWeather (position) {
 		
 		$.ajax({
 		  dataType: "jsonp",
-		  url: 'https://api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
+		  url: '//api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
 		  success: readWeather
 		});
 		
 		findLocation();
-	}
+
 
 	
 }
