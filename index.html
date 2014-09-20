@@ -583,6 +583,11 @@ function findLocation () {
 
 function getWeather (position) {
 
+	if (!position) {
+		$('#log').append('Failed to load location data...<br>');
+		setBackground ();
+	}
+
 	console.log(position);
 	currentPosition = position;
 	$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
