@@ -607,10 +607,9 @@ function getWeather (position) {
 
 	$('#log').append('Loading position data...<br>');
 
-	
-		if (position) {
-
-			console.log(position);
+		
+		if (typeof position !== 'undefined') {
+		    console.log(position);
 			currentPosition = position;
 			//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
 			$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
@@ -625,8 +624,9 @@ function getWeather (position) {
 			
 
 			findLocation();
-
 		}
+
+
 
 		else {
 			$('#log').append('Failed to load position data...<br>');
