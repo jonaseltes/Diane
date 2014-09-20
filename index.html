@@ -55,11 +55,15 @@ document.addEventListener("deviceready", onDeviceReady, false);
             	setTimeout(function(){
             		navigator.splashscreen.hide();
             	},100);
+
+            	navigator.geolocation.getCurrentPosition(getWeather, onError);
             	
             	//navigator.splashscreen.show();
             	
             	console.log("Device Ready!");
             }
+
+
 
 var db;
 var colorsArray;
@@ -91,12 +95,18 @@ var afternoonColor = jQuery.Color( "#56dd7f" );
 var eveningColor = jQuery.Color( "#dd8956" );
 var sunsetColor = jQuery.Color( "#3a4c61" );
 var midnightColor = jQuery.Color( "#373d45" );
-
 var satValue;
 var hueValue;
 var lightValue;
 var weatherString;
+var location = false;
 
+
+function onError(error) {
+		$('#log').append('Failed to load position data...<br>');
+		$('#log').append(error.message+' <br>');
+        setBackground ();
+    }
 
 function timeConverter(UNIX_timestamp){
  var a = new Date(UNIX_timestamp*1000);
@@ -583,6 +593,10 @@ function findLocation () {
 
 function getWeather (position) {
 
+	location = true;
+
+	$('#log').append('Loading position data...<br>');
+
 	if (!position) {
 		$('#log').append('Failed to load location data...<br>');
 		setBackground ();
@@ -603,15 +617,17 @@ function getWeather (position) {
 }
 
 function getLocation () {
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(getWeather);
-		$('#log').append('Loading position data...<br>');
-	}
-	
-	else {
-	
+	if (!location) {
+
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(getWeather);
+			$('#log').append('Loading position data...<br>');
+		}
+		
+		else {
 			setBackground ();
-	
+		}
+
 	}
 }
 
