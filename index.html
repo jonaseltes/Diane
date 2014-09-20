@@ -27,25 +27,17 @@
 
 
 
-
-
-
-
-
-
-
-
 <script type="text/javascript" src="jquery.min.js"></script>
 
 <!--<script type="text/javascript" src="jquery-1.8.3.min.js"></script>-->
 
-<script type="text/javascript" src="https://rawgithub.com/jquery/jquery-color/master/jquery.color.js"></script>
-<script type="text/javascript" src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
+<script type="text/javascript" src="jquery.color.js"></script>
+<!--<script type="text/javascript" src="http://stevenlevithan.com/assets/misc/date.format.js"></script>-->
 <script type="text/javascript" src="jgestures.min.js"></script>
 
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jquery-ui.min.js"></script>
 
 <script type="text/javascript" src="slideToucher.js"></script>
 <script type="text/javascript" src="phonegap.js"></script>
@@ -97,7 +89,7 @@ var lateMorningColor = jQuery.Color( "#50dce5" );
 var middayColor = jQuery.Color( "#56ddac" );
 var afternoonColor = jQuery.Color( "#56dd7f" );
 var eveningColor = jQuery.Color( "#dd8956" );
-var sunsetColor = jQuery.Color( "#dd8956" );
+var sunsetColor = jQuery.Color( "#3a4c61" );
 var midnightColor = jQuery.Color( "#373d45" );
 
 var satValue;
@@ -194,8 +186,17 @@ function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
 		var lightVariable = ( $.Color(secondColor).lightness() - $.Color(firstColor).lightness() )/diffMinsFull;
 		var satVariable = ( $.Color(secondColor).saturation() - $.Color(firstColor).saturation() )/diffMinsFull;
 
-		satValue = S+satVariable*diffMinsRelative;
-		hueValue = H+hueVariable*diffMinsRelative;
+		//currentTemperature = 0+50;
+		var tempVariable = -(20-currentTemperature)*0.4;
+		tempVariable = 1/((currentTemperature+50)*0.9);
+
+		var hueTemp = (1/(currentTemperature))*1000;
+
+		console.log("hueTemp: "+hueTemp);
+		console.log("tempVariable: "+tempVariable);
+
+		satValue = S+satVariable*diffMinsRelative-tempVariable;
+		hueValue = H+hueVariable*diffMinsRelative+hueTemp;
 		lightValue = L+lightVariable*diffMinsRelative;
 
 }
@@ -206,8 +207,8 @@ function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
 function timeOfDay (sunrise, sunset) {
 
 
-	currentDate.setHours(currentDate.getHours()+2);
-	console.log("New currentDate is:" +currentDate);
+	//currentDate.setHours(currentDate.getHours()+2);
+	//console.log("New currentDate is:" +currentDate);
 	console.log("sunrise: " +sunrise);
 	console.log("sunset: " +sunset);
 	console.log("calculating time of day");
@@ -220,7 +221,6 @@ function timeOfDay (sunrise, sunset) {
 	midday.setMinutes((sunset.getMinutes()+sunrise.getMinutes())/2);
 	midday.setSeconds((sunset.getSeconds()+sunrise.getSeconds())/2);
 	console.log("Midday: " +midday);
-
 
 
 
@@ -280,9 +280,6 @@ function timeOfDay (sunrise, sunset) {
 			return "evening";
 		}
 	}
-
-	
-
 	
 
 	//NIGHT
@@ -292,16 +289,15 @@ function timeOfDay (sunrise, sunset) {
 		var midnight;
 
 
+
+
 		if (sunset.getHours() > sunrise.getHours()) {
 			console.log("sunset is before 00:00");
 			if (((currentDate.getHours() <= 23) && (currentDate.getHours() >= sunrise.getHours())) && (sunset.getDate() != currentDate.getDate())) {
 				sunset.setDate(currentDate.getDate());
+				console.log("new sunset: " +sunset);
 			}
 
-			else {
-				sunset.setDate(currentDate.getDate()-1);
-			}
-			console.log("new sunset: " +sunset);
 			midnight = new Date(sunset);
 			midnight.setHours(sunset.getHours()+(((23-sunset.getHours())+sunrise.getHours())/2));
 		}
@@ -309,6 +305,7 @@ function timeOfDay (sunrise, sunset) {
 		else {
 			if (sunset.getDate() != currentDate.getDate()){
 				sunset.setDate(currentDate.getDate());
+				console.log("new sunset: " +sunset);
 			}
 			midnight = new Date(sunset);
 			midnight.setHours((sunset.getHours()+sunrise.getHours())/2);
@@ -320,19 +317,35 @@ function timeOfDay (sunrise, sunset) {
 
 		console.log("midnight: " +midnight);
 
-		if ((currentDate.getHours() < midnight.getHours()) || ((currentDate.getHours() == midnight.getHours() ) && (currentDate.getMinutes() < midnight.getMinutes()))) {
-			getCoreColor (sunset, midnight, sunsetColor, midnightColor);
-			return "late evening";
+		if (midnight.getHours() > sunset.getHours()){
+
+			if ((currentDate.getHours() < midnight.getHours()) || ((currentDate.getHours() == midnight.getHours() ) && (currentDate.getMinutes() < midnight.getMinutes()))) {
+				getCoreColor (sunset, midnight, sunsetColor, midnightColor);
+				return "late evening";
+			}
+
+			else {
+				getCoreColor (midnight, sunrise, midnightColor, sunriseColor);
+				return "night";
+			}
+
 		}
 
 		else {
-			getCoreColor (midnight, sunrise, midnightColor, sunriseColor);
-			return "night";
+
+			if ((currentDate.getHours() > midnight.getHours()) || ((currentDate.getHours() == midnight.getHours() ) && (currentDate.getMinutes() < midnight.getMinutes()))) {
+				getCoreColor (sunset, midnight, sunsetColor, midnightColor);
+				return "late evening";
+			}
+
+			else {
+				getCoreColor (midnight, sunrise, midnightColor, sunriseColor);
+				return "night";
+			}
+
 		}
 
 	}
-
-
 
 }
 
@@ -357,13 +370,6 @@ function setBackground (weather, daily) {
 		console.log("weather: " ,weather);
 		
 
-		var temperatureMin = daily.data[0].temperatureMin;
-		var temperatureMax = daily.data[0].temperatureMax;
-		var stageOfDay = timeOfDay(sunrise, sunset, weather);
-		console.log("temperatureMin: "+temperatureMin);
-		console.log("temperatureMax: "+temperatureMax);
-		console.log("stageOfDay: " +stageOfDay);
-
 		$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
 		var temperature = weather.temperature;
 		console.log("temperature: " +temperature);
@@ -371,6 +377,13 @@ function setBackground (weather, daily) {
 		console.log(weather);
 		currentWeather = weather;
 		currentTemperature = temperature;
+
+		var temperatureMin = daily.data[0].temperatureMin;
+		var temperatureMax = daily.data[0].temperatureMax;
+		var stageOfDay = timeOfDay(sunrise, sunset, weather);
+		console.log("temperatureMin: "+temperatureMin);
+		console.log("temperatureMax: "+temperatureMax);
+		console.log("stageOfDay: " +stageOfDay);
 
 		var R = 140;
 		var G = 140;
@@ -558,7 +571,7 @@ function findLocation () {
           setBackground ();
         }
       } else {
-        alert("Geocoder failed due to: " + status);
+        console.log("Geocoder failed due to: " + status);
         setBackground ();
       }
    	
