@@ -99,14 +99,14 @@ var satValue;
 var hueValue;
 var lightValue;
 var weatherString;
-var location = false;
+//var location = false;
 
 
-function onError(error) {
+/*function onError(error) {
 		$('#log').append('Failed to load position data...<br>');
 		$('#log').append(error.message+' <br>');
         setBackground ();
-    }
+    }*/
 
 function timeConverter(UNIX_timestamp){
  var a = new Date(UNIX_timestamp*1000);
@@ -602,19 +602,23 @@ function getWeather (position) {
 		setBackground ();
 	}
 
-	console.log(position);
-	currentPosition = position;
-	//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
-	$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
-	$('#log').append('Getting weather data...<br>');
+	else {
+		console.log(position);
+		currentPosition = position;
+		//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
+		$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
+		$('#log').append('Getting weather data...<br>');
+		
+		$.ajax({
+		  dataType: "jsonp",
+		  url: 'https://api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
+		  success: readWeather
+		});
+		
+		findLocation();
+	}
+
 	
-	$.ajax({
-	  dataType: "jsonp",
-	  url: 'https://api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
-	  success: readWeather
-	});
-	
-	findLocation();
 }
 
 function locationError (error) {
