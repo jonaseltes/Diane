@@ -68,6 +68,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 function checkConnection() {
     var networkState = navigator.network.connection.type;
 
+    $('#log').append('Looking for network connection... <br>');
+
     var states = {};
     states[Connection.UNKNOWN]  = 'Unknown connection';
     states[Connection.ETHERNET] = 'Ethernet connection';
@@ -78,6 +80,11 @@ function checkConnection() {
     states[Connection.NONE]     = 'No network connection';
 
     alert('Connection type: ' + networkState);
+
+    if (networkState == Connection.NONE) {
+    	$('#log').append('No network connection found... <br>');
+    	setBackground();
+    } 
 }
 
 
@@ -655,6 +662,9 @@ function getWeather (position) {
 }
 
 function locationError (error) {
+
+	setBackground ();
+
 	switch(error.code) {
         case error.PERMISSION_DENIED:
         	$('#log').append('User denied the request for Geolocation.<br>');
