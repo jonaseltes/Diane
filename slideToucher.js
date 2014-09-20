@@ -296,7 +296,7 @@ var currentColor;
             */
             if (sliding == 2) {
             
-            	
+                
                 sliding = 0;
                 plugin[slideType].currentSlide = plugin[slideType].pixelOffset < startPixelOffset ? plugin[slideType].currentSlide + 1 : plugin[slideType].currentSlide - 1;
                 plugin[slideType].currentSlide = Math.min(Math.max(plugin[slideType].currentSlide, 0), plugin[slideType].slideCount - 1);
@@ -316,29 +316,29 @@ var currentColor;
                
                 
                 if (postInView > -1 && downY < upY) {
-                		console.log("scrollade upp");
-                		postInView--;
-                		if (postInView == -1) {
-	                		$("body, #topMenu").animate({
-											backgroundColor: currentColor
-											},1000);
-                		}
-                		
-                		else {
-	                		$("body, #topMenu").animate({
-											backgroundColor: colorsArray[postInView]
-											},1000);
-                		}
-	                    
-	            }
+                        console.log("scrollade upp");
+                        postInView--;
+                        if (postInView == -1) {
+                            $("body, #topMenu").animate({
+                                            backgroundColor: currentColor
+                                            },700);
+                        }
+                        
+                        else {
+                            $("body, #topMenu").animate({
+                                            backgroundColor: colorsArray[postInView]
+                                            },700);
+                        }
+                        
+                }
             
-	            else if (postInView < colorsArray.length-1 && downY > upY) {
-	            	 postInView++;
-	            	 console.log("scrollade ner");
-	            	 $("body, #topMenu").animate({
-											backgroundColor: colorsArray[postInView]
-											},700);
-	            }
+                else if (postInView < colorsArray.length-1 && downY > upY) {
+                     postInView++;
+                     console.log("scrollade ner");
+                     $("body, #topMenu").animate({
+                                            backgroundColor: colorsArray[postInView]
+                                            },700);
+                }
                     
                     console.log("postInView:" + postInView);
                     console.log(plugin);
