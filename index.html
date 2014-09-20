@@ -17,7 +17,7 @@
 
 <title>Diane</title>
 
-<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700|Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 <link href='stylesheet.css' rel='stylesheet' type='text/css'>
 
 
@@ -595,6 +595,11 @@ function findLocation () {
 }
 
 
+function weatherFail (xhr,status,error) {
+	$('#log').append('Failed to load position data...<br>');
+	setBackground ();
+}
+
 
 function getWeather (position) {
 
@@ -603,22 +608,31 @@ function getWeather (position) {
 	$('#log').append('Loading position data...<br>');
 
 	
+		if (position) {
 
-		console.log(position);
-		currentPosition = position;
-		//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
-		$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
-		$('#log').append('Getting weather data...<br>');
+			console.log(position);
+			currentPosition = position;
+			//currentPosition = position.coords.latitude+ ', '+position.coords.longitude;
+			$('#log').append('Latitude position: '+position.coords.latitude+'<br>Latitude position: '+position.coords.longitude+'<br>');
+			$('#log').append('Getting weather data...<br>');
+			
+			$.ajax({
+			  dataType: "jsonp",
+			  url: '//api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
+			  success: readWeather,
+			  error: weatherFail
+			});
+			
+
+			findLocation();
+
+		}
+
+		else {
+			$('#log').append('Failed to load position data...<br>');
+			setBackground ();
+		}
 		
-		$.ajax({
-		  dataType: "jsonp",
-		  url: '//api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
-		  success: readWeather
-		});
-		
-		findLocation();
-
-
 	
 }
 
