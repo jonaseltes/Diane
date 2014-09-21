@@ -401,14 +401,15 @@ function setBackground (weather, daily) {
 
 	$('#log').append('Reading weather data... <br>');
 
-	
+	var sunrise;
+	var sunset;	
 
 
 	if (typeof weather === 'undefined') {
 		//currentColor = '#778abf';
 		$('#log').append('Failed to load weather data... <br>');
-		var sunrise = localStorage.getItem("sunriseStorage");
-		var sunset = localStorage.getItem("sunsetStorage");
+		sunrise = localStorage.getItem("sunriseStorage");
+		sunset = localStorage.getItem("sunsetStorage");
 		$('#log').append('Sunrise is '+sunrise+'<br>');
 		$('#log').append('Sunset is '+sunset+'<br>');
 		currentColor = '#000000';
@@ -427,8 +428,8 @@ function setBackground (weather, daily) {
 		currentWeather = weather;
 		currentTemperature = temperature
 
-		var sunrise = timeConverter(daily.data[0].sunriseTime);
-		var sunset = timeConverter(daily.data[0].sunsetTime);
+		sunrise = timeConverter(daily.data[0].sunriseTime);
+		sunset = timeConverter(daily.data[0].sunsetTime);
 
 		if (typeof(Storage) !== 'undefined') {
 			localStorage.sunriseStorage = sunrise;
@@ -443,7 +444,7 @@ function setBackground (weather, daily) {
 		console.log("weather: " ,weather);
 		console.log("cuurentTemperature: " +currentTemperature);
 	
-	}
+	
 		
 		
 
@@ -535,6 +536,10 @@ function setBackground (weather, daily) {
 			}
 
 
+
+		}
+
+			
 			console.log("hue: "+hueValue);
 			console.log("saturation: "+satValue);
 			console.log("lightness: "+lightValue);
