@@ -327,12 +327,13 @@ function timeOfDay (sunrise, sunset) {
 
 		if (sunset.getHours() > sunrise.getHours()) {
 			console.log("sunset is before 00:00");
-			if (((currentDate.getHours() <= 23) && (currentDate.getHours() >= sunrise.getHours())) && (sunset.getDate() != currentDate.getDate())) {
+			if ( ((currentDate.getHours() <= 23) && (currentDate.getHours() >= sunrise.getHours())) && (sunset.getDate() != currentDate.getDate()) ) {
 				sunset.setDate(currentDate.getDate());
 				console.log("new sunset: " +sunset);
 			}
 
-			else {
+			else if (((currentDate.getHours() >= 23) && (currentDate.getHours() <= sunrise.getHours())) && (sunset.getDate() == currentDate.getDate())) {
+				console.log("Moving sunset to yesterday");
 				sunset.setDate(currentDate.getDate()-1);
 				console.log("new sunset: " +sunset);
 			}
