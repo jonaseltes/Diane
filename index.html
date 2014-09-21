@@ -438,6 +438,10 @@ function setBackground (weather, daily) {
 			$('#log').append('Sunrise is '+localStorage.sunriseStorage+'<br>');
 			$('#log').append('Sunset is '+localStorage.sunsetStorage+'<br>');
 		}
+
+		console.log("daily: " ,daily);
+		console.log("weather: " ,weather);
+		console.log("cuurentTemperature: " +currentTemperature);
 	
 	}
 		
@@ -445,11 +449,7 @@ function setBackground (weather, daily) {
 
 		var stageOfDay = timeOfDay(sunrise, sunset);
 		console.log("stageOfDay: " +stageOfDay);
-		console.log("daily: " ,daily);
-		console.log("weather: " ,weather);
-
-
-		console.log("cuurentTemperature: " +currentTemperature);
+		
 
 			colors = new Array(8);
 			colors[0] = "#ACD9D1";
