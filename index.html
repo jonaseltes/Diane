@@ -223,19 +223,14 @@ function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
 		var satVariable = ( $.Color(secondColor).saturation() - $.Color(firstColor).saturation() )/diffMinsFull;
 
 
-		//currentTemperature = 0+50;
-		satValue = S+satVariable*diffMinsRelative;
-		hueValue = H+hueVariable*diffMinsRelative;
-		lightValue = L+lightVariable*diffMinsRelative;
-
-	
-
 		var satTemp = 1/((currentTemperature+50)*0.9);
 		var hueTemp = (1/(currentTemperature))*100;
 		console.log("hueTemp: "+hueTemp);
 		console.log("satTemp: "+satTemp);
-		satValue += satTemp;
-		hueValue += hueTemp;
+		//currentTemperature = 0+50;
+		satValue = S+satVariable*diffMinsRelative+satTemp;
+		hueValue = H+hueVariable*diffMinsRelative+hueTemp;
+		lightValue = L+lightVariable*diffMinsRelative;
 
 
 }
@@ -411,12 +406,7 @@ function setBackground (weather, daily) {
 
 	else {
 		
-		var sunrise = timeConverter(daily.data[0].sunriseTime);
-		var sunset = timeConverter(daily.data[0].sunsetTime);
-		var stageOfDay = timeOfDay(sunrise, sunset);
-		console.log("stageOfDay: " +stageOfDay);
-		console.log("daily: " ,daily);
-		console.log("weather: " ,weather);
+		
 		
 
 		$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
@@ -427,7 +417,12 @@ function setBackground (weather, daily) {
 		currentWeather = weather;
 		currentTemperature = temperature
 
-
+		var sunrise = timeConverter(daily.data[0].sunriseTime);
+		var sunset = timeConverter(daily.data[0].sunsetTime);
+		var stageOfDay = timeOfDay(sunrise, sunset);
+		console.log("stageOfDay: " +stageOfDay);
+		console.log("daily: " ,daily);
+		console.log("weather: " ,weather);
 
 		var temperatureMin = daily.data[0].temperatureMin;
 		var temperatureMax = daily.data[0].temperatureMax;
