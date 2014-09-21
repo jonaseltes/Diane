@@ -663,6 +663,8 @@ function getWeather (position) {
 
 function locationError (error) {
 
+	$('#log').append('Failed to load location data...<br>');	
+
 	setBackground ();
 
 	switch(error.code) {
