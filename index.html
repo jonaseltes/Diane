@@ -82,7 +82,14 @@ function checkConnection() {
 
     if (networkState == Connection.NONE) {
     	$('#log').append('No network connection found... <br>');
-    	setBackground();
+
+    	if (localStorage.sunrise === null) {
+		  $('#log').append('Sorry, Diane requires a network connection for the first launch...<br>');
+		}
+
+		else {
+			setBackground();
+		}
     }
 
     else {
@@ -231,7 +238,6 @@ function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
 		satValue = S+satVariable*diffMinsRelative+satTemp;
 		hueValue = H+hueVariable*diffMinsRelative+hueTemp;
 		lightValue = L+lightVariable*diffMinsRelative;
-
 
 }
 
@@ -401,14 +407,15 @@ function setBackground (weather, daily) {
 	if (typeof weather === 'undefined') {
 		//currentColor = '#778abf';
 		$('#log').append('Failed to load weather data... <br>');
+		var sunrise = localStorage.getItem("sunrise");
+		var sunset = localStorage.getItem("sunset");
 		currentColor = '#000000';
-		satValue = 0;
+		//satValue = 0;
 	}
 
+
+
 	else {
-		
-		
-		
 
 		$('#log').append('Weather: '+weather.temperature+'°C '+weather.icon+'<br>');
 		var temperature = weather.temperature;
@@ -420,21 +427,21 @@ function setBackground (weather, daily) {
 
 		var sunrise = timeConverter(daily.data[0].sunriseTime);
 		var sunset = timeConverter(daily.data[0].sunsetTime);
+
+		if (typeof(Storage) != "undefined") {
+			localStorage.sunrise = sunrise;
+			localStorage.sunset = sunset;
+		}
+	
+	}
+		
+
+		
+
 		var stageOfDay = timeOfDay(sunrise, sunset);
 		console.log("stageOfDay: " +stageOfDay);
 		console.log("daily: " ,daily);
 		console.log("weather: " ,weather);
-
-		var temperatureMin = daily.data[0].temperatureMin;
-		var temperatureMax = daily.data[0].temperatureMax;
-		
-		console.log("temperatureMin: "+temperatureMin);
-		console.log("temperatureMax: "+temperatureMax);
-		
-
-		var R = 140;
-		var G = 140;
-		var B = 140;
 
 
 		console.log("cuurentTemperature: " +currentTemperature);
@@ -451,15 +458,7 @@ function setBackground (weather, daily) {
 			
 			var randomColor = Math.floor(Math.random() * 7) + 0;
 
-			//var time = formatAMPM(newDate);
-
-			/*currentColor = '#5ce5a1';
-			currentColor = jQuery.Color( "#5ce5a1" );
-			var satValue = $.Color(currentColor).saturation();
-			var hueValue = $.Color(currentColor).hue();
-			var lightValue = $.Color(currentColor).lightness();
-			console.log("saturation: " + $.Color(currentColor).saturation());*/
-
+	
 
 
 			/*if (weather == "clear-day") {
@@ -526,6 +525,10 @@ function setBackground (weather, daily) {
 				currentColor = '#5A302A';
 			}*/
 
+			if (typeof weather === 'undefined') {
+				satValue = 0;
+			}
+
 
 			console.log("hue: "+hueValue);
 			console.log("saturation: "+satValue);
@@ -533,7 +536,7 @@ function setBackground (weather, daily) {
 			currentColor = jQuery.Color({ hue: hueValue, saturation: satValue, lightness: lightValue, alpha: 1 });
 		
 
-	}
+	
 
 	
 	
