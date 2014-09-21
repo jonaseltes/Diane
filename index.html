@@ -424,8 +424,10 @@ function setBackground (weather, daily) {
 		//currentColor = '#778abf';
 		$('#log').append('Failed to load weather data... <br>');
 		console.log("weather is offline: " +weather);
-		sunrise = localStorage.sunriseStorage;
-		sunset = localStorage.sunsetStorage;
+		sunrise = new Date(localStorage.sunriseStorage);
+		sunset = new Date(localStorage.sunsetStorage);
+		$('#log').append('Sunrise '+sunrise+'<br>');
+		$('#log').append('Sunset '+sunset+'<br>');
 		console.log("localStorage.sunriseStorage: "+localStorage.sunriseStorage);
 		console.log("localStorage.sunsetStorage: "+localStorage.sunsetStorage);
 		currentColor = '#000000';
