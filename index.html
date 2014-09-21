@@ -344,7 +344,7 @@ function timeOfDay (sunrise, sunset) {
 				console.log("new sunset: " +sunset);
 			}
 
-			else if (((currentDate.getHours() >= 23) && (currentDate.getHours() <= sunrise.getHours())) && (sunset.getDate() == currentDate.getDate())) {
+			else if ((currentDate.getHours() <= sunrise.getHours()) && (sunset.getDate() == currentDate.getDate())) {
 				console.log("Moving sunset to yesterday");
 				sunset.setDate(currentDate.getDate()-1);
 				console.log("new sunset: " +sunset);
@@ -369,9 +369,9 @@ function timeOfDay (sunrise, sunset) {
 
 		console.log("midnight: " +midnight);
 
-		if (midnight.getHours() > sunset.getHours()){
+		if (midnight < sunset) {
 
-			if ((currentDate.getHours() < midnight.getHours()) || ((currentDate.getHours() == midnight.getHours() ) && (currentDate.getMinutes() < midnight.getMinutes()))) {
+			if (currentDate < midnight) {
 				getCoreColor (sunset, midnight, sunsetColor, midnightColor);
 				return "late evening";
 			}
@@ -385,7 +385,7 @@ function timeOfDay (sunrise, sunset) {
 
 		else {
 
-			if ((currentDate.getHours() > midnight.getHours()) || ((currentDate.getHours() == midnight.getHours() ) && (currentDate.getMinutes() < midnight.getMinutes()))) {
+			if (currentDate < midnight) {
 				getCoreColor (sunset, midnight, sunsetColor, midnightColor);
 				return "late evening";
 			}
