@@ -413,6 +413,7 @@ function setBackground (weather, daily) {
 		$('#log').append('Sunrise is '+sunrise+'<br>');
 		$('#log').append('Sunset is '+sunset+'<br>');
 		currentColor = '#000000';
+		var stageOfDay = timeOfDay(sunrise, sunset);
 		//satValue = 0;
 	}
 
@@ -539,7 +540,7 @@ function setBackground (weather, daily) {
 
 		}
 
-			
+
 			console.log("hue: "+hueValue);
 			console.log("saturation: "+satValue);
 			console.log("lightness: "+lightValue);
