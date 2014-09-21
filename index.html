@@ -83,7 +83,7 @@ function checkConnection() {
     if (networkState == Connection.NONE) {
     	$('#log').append('No network connection found... <br>');
 
-    	if (localStorage.sunrise === null) {
+    	if (localStorage.getItem("sunrise") === null) {
 		  $('#log').append('Sorry, Diane requires a network connection for the first launch...<br>');
 		}
 
