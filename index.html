@@ -83,7 +83,7 @@ function checkConnection() {
     if (networkState == Connection.NONE) {
     	$('#log').append('No network connection found... <br>');
 
-    	if (localStorage.getItem("sunrise") === null) {
+    	if (localStorage.getItem("sunriseStorage") === null) {
 		  $('#log').append('Sorry, Diane requires a network connection for the first launch...<br>');
 		}
 
@@ -407,8 +407,8 @@ function setBackground (weather, daily) {
 	if (typeof weather === 'undefined') {
 		//currentColor = '#778abf';
 		$('#log').append('Failed to load weather data... <br>');
-		var sunrise = localStorage.getItem("sunrise");
-		var sunset = localStorage.getItem("sunset");
+		var sunrise = localStorage.getItem("sunriseStorage");
+		var sunset = localStorage.getItem("sunsetStorage");
 		currentColor = '#000000';
 		//satValue = 0;
 	}
@@ -428,14 +428,13 @@ function setBackground (weather, daily) {
 		var sunrise = timeConverter(daily.data[0].sunriseTime);
 		var sunset = timeConverter(daily.data[0].sunsetTime);
 
-		if (typeof(Storage) != "undefined") {
-			localStorage.sunrise = sunrise;
-			localStorage.sunset = sunset;
+		if (typeof(Storage) !== 'undefined') {
+			localStorage.sunriseStorage = sunrise;
+			localStorage.sunsetStorage = sunset;
 		}
 	
 	}
 		
-
 		
 
 		var stageOfDay = timeOfDay(sunrise, sunset);
