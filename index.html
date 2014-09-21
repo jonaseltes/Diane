@@ -35,7 +35,7 @@
 <!--<script type="text/javascript" src="http://stevenlevithan.com/assets/misc/date.format.js"></script>-->
 <script type="text/javascript" src="jgestures.min.js"></script>
 
-<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
 
 <script type="text/javascript" src="jquery-ui.min.js"></script>
 
@@ -55,7 +55,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
             	setTimeout(function(){
             		navigator.splashscreen.hide();
             	},100);
-            	//checkConnection();
+
+            	checkConnection();
 
             	//navigator.geolocation.getCurrentPosition(getWeather, onError);
             	
@@ -642,7 +643,7 @@ function getWeather (position) {
 			
 			$.ajax({
 			  dataType: "jsonp",
-			  url: '//api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
+			  url: 'http://api.forecast.io/forecast/b55686b06aeb16384bad113bcbbf8dc9/' + position.coords.latitude + ',' + position.coords.longitude +'?units=auto',
 			  success: readWeather,
 			  error: weatherFail
 			});
