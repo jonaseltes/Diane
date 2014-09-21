@@ -409,6 +409,8 @@ function setBackground (weather, daily) {
 		$('#log').append('Failed to load weather data... <br>');
 		var sunrise = localStorage.getItem("sunriseStorage");
 		var sunset = localStorage.getItem("sunsetStorage");
+		$('#log').append('Sunrise is '+sunrise+'<br>');
+		$('#log').append('Sunset is '+sunset+'<br>');
 		currentColor = '#000000';
 		//satValue = 0;
 	}
@@ -431,6 +433,10 @@ function setBackground (weather, daily) {
 		if (typeof(Storage) !== 'undefined') {
 			localStorage.sunriseStorage = sunrise;
 			localStorage.sunsetStorage = sunset;
+			console.log("localStorage.sunriseStorage: "+localStorage.sunriseStorage);
+			console.log("localStorage.sunsetStorage: "+localStorage.sunsetStorage);
+			$('#log').append('Sunrise is '+localStorage.sunriseStorage+'<br>');
+			$('#log').append('Sunset is '+localStorage.sunsetStorage+'<br>');
 		}
 	
 	}
