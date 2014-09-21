@@ -229,15 +229,21 @@ function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
 		var lightVariable = ( $.Color(secondColor).lightness() - $.Color(firstColor).lightness() )/diffMinsFull;
 		var satVariable = ( $.Color(secondColor).saturation() - $.Color(firstColor).saturation() )/diffMinsFull;
 
-
-		var satTemp = 1/((currentTemperature+50)*0.9);
-		var hueTemp = (1/(currentTemperature))*100;
-		console.log("hueTemp: "+hueTemp);
-		console.log("satTemp: "+satTemp);
-		//currentTemperature = 0+50;
-		satValue = S+satVariable*diffMinsRelative+satTemp;
-		hueValue = H+hueVariable*diffMinsRelative+hueTemp;
+		satValue = S+satVariable*diffMinsRelative;
+		hueValue = H+hueVariable*diffMinsRelative;
 		lightValue = L+lightVariable*diffMinsRelative;
+
+		if (typeof currentTemperature !== 'undefined'){
+			var satTemp = 1/((currentTemperature+50)*0.9);
+			var hueTemp = (1/(currentTemperature))*100;
+			console.log("hueTemp: "+hueTemp);
+			console.log("satTemp: "+satTemp);
+			//currentTemperature = 0+50;
+			satValue += satTemp;
+			hueValue += hueTemp;
+		}
+
+		else satValue = 0;
 
 }
 
@@ -397,24 +403,36 @@ function timeOfDay (sunrise, sunset) {
 
 
 
+
+
+
+
+
+
+
+
+
 function setBackground (weather, daily) {
 
-	$('#log').append('Reading weather data... <br>');
-
 	var sunrise;
-	var sunset;	
+	var sunset;
 
+	weather = undefined;
+
+	$('#log').append('Reading weather data... <br>');
 
 	if (typeof weather === 'undefined') {
 		//currentColor = '#778abf';
 		$('#log').append('Failed to load weather data... <br>');
-		sunrise = localStorage.getItem("sunriseStorage");
-		sunset = localStorage.getItem("sunsetStorage");
-		$('#log').append('Sunrise is '+sunrise+'<br>');
-		$('#log').append('Sunset is '+sunset+'<br>');
+		console.log("weather is offline: " +weather);
+		sunrise = localStorage.sunriseStorage;
+		sunset = localStorage.sunsetStorage;
+		console.log("localStorage.sunriseStorage: "+localStorage.sunriseStorage);
+		console.log("localStorage.sunsetStorage: "+localStorage.sunsetStorage);
 		currentColor = '#000000';
-		var stageOfDay = timeOfDay(sunrise, sunset);
 		//satValue = 0;
+		var stageOfDay = timeOfDay(sunrise, sunset);
+		console.log("stageOfDay: " +stageOfDay);
 	}
 
 
@@ -437,21 +455,16 @@ function setBackground (weather, daily) {
 			localStorage.sunsetStorage = sunset;
 			console.log("localStorage.sunriseStorage: "+localStorage.sunriseStorage);
 			console.log("localStorage.sunsetStorage: "+localStorage.sunsetStorage);
-			$('#log').append('Sunrise is '+localStorage.sunriseStorage+'<br>');
-			$('#log').append('Sunset is '+localStorage.sunsetStorage+'<br>');
 		}
-
-		console.log("daily: " ,daily);
-		console.log("weather: " ,weather);
-		console.log("cuurentTemperature: " +currentTemperature);
 	
 	
-		
-		
 
-		var stageOfDay = timeOfDay(sunrise, sunset);
+		var stageOfDay = timeOfDay(sunrise, sunset, weather);
 		console.log("stageOfDay: " +stageOfDay);
-		
+
+
+
+		console.log("cuurentTemperature: " +currentTemperature);
 
 			colors = new Array(8);
 			colors[0] = "#ACD9D1";
@@ -465,7 +478,15 @@ function setBackground (weather, daily) {
 			
 			var randomColor = Math.floor(Math.random() * 7) + 0;
 
-	
+			//var time = formatAMPM(newDate);
+
+			/*currentColor = '#5ce5a1';
+			currentColor = jQuery.Color( "#5ce5a1" );
+			var satValue = $.Color(currentColor).saturation();
+			var hueValue = $.Color(currentColor).hue();
+			var lightValue = $.Color(currentColor).lightness();
+			console.log("saturation: " + $.Color(currentColor).saturation());*/
+
 
 
 			/*if (weather == "clear-day") {
@@ -491,8 +512,6 @@ function setBackground (weather, daily) {
 				R = 157;
 				G = 198;
 				B = 202;
-				satValue = satValue*0.5;
-				lightValue = lightValue*1.1;
 				//satValue -= 0.2;
 			}
 			
@@ -501,7 +520,6 @@ function setBackground (weather, daily) {
 				R = 158;
 				G = 171;
 				B = 172;
-				satValue = satValue*0.5;
 				//satValue -= 0.2;
 			}
 
@@ -510,8 +528,6 @@ function setBackground (weather, daily) {
 				R = 158;
 				G = 171;
 				B = 172;
-				satValue = satValue*0.5;
-				lightValue = lightValue*1.1;
 				//satValue -= 0.2;
 			}
 			
@@ -521,7 +537,6 @@ function setBackground (weather, daily) {
 			
 			if (weather == "cloudy") {
 				//currentColor = '#0E4345';
-				satValue = satValue*0.2;
 			}
 			
 			/*if (weather == "partly-cloudy-day") {
@@ -532,30 +547,27 @@ function setBackground (weather, daily) {
 				currentColor = '#5A302A';
 			}*/
 
-			if (typeof weather === 'undefined') {
-				satValue = 0;
-			}
-
-
-
 		}
 
+		console.log("hue: "+hueValue);
+		console.log("saturation: "+satValue);
+		console.log("lightness: "+lightValue);
 
-			console.log("hue: "+hueValue);
-			console.log("saturation: "+satValue);
-			console.log("lightness: "+lightValue);
-			currentColor = jQuery.Color({ hue: hueValue, saturation: satValue, lightness: lightValue, alpha: 1 });
+		currentColor = jQuery.Color({ hue: hueValue, saturation: satValue, lightness: lightValue, alpha: 1 });
+
 		
-
-	
-
-	
-	
-	console.log("currentColor:" + currentColor);
-	
-	initDatabase();
-	loadUnsavedPost ();				
+		
+		console.log("currentColor:" + currentColor);
+		
+		initDatabase();
+		loadUnsavedPost ();				
 }
+
+
+
+
+
+
 
 
 function loadUnsavedPost (){
