@@ -803,24 +803,26 @@ function singleDataSelectHandler(transaction, results){
         post.weather  = row['weather'];
         post.date  = row['date'];
         newDate = new Date(post.date);
-        post.temperature = row['temperature'].substr(0, 2);
+        post.temperature = row['temperature'];
         console.log("post.temperature:" +post.temperature);
-        post.location = row['location'].substring(0, row['location'].indexOf(','));
+        post.location = row['location'];
         console.log("post.location: " +post.location);
         
         colorsArray.unshift(post.bgcolor);
         
         var time = formatAMPM(newDate);
 
-        if (!post.location) {
+        if ((post.location === null) || (post.temperature === null )) {
+        	console.log("couldn't find location or temperature...");
         	$('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">N/A<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
         	$('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
         }
 
         else {
-        
-        $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature +'° '+ post.location +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
-        $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+        	console.log("Found complete data.");
+	        $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature.substr(0, 2) +'° '+ post.location.substring(0, row['location'].indexOf(','))+'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
+	        $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
+
     	}
         
        //console.log(+ post.id + post.content + post.bgcolor + post.weather + post.date +);
@@ -828,6 +830,7 @@ function singleDataSelectHandler(transaction, results){
        	scalePosts();
        	plugin.vertical.slideCount++;
        	console.log("slideCount: " +plugin.vertical.slideCount);
+       	//setBackground();
        	//slider(colorsArray, currentColor);
        	//showAndHide(); 
     }
@@ -856,8 +859,8 @@ function dataSelectHandler(transaction, results){
         post.weather    = row['weather'];
         post.date  = row['date'];
         newDate = new Date(post.date);
-        post.temperature = row['temperature'].substr(0, 2);
-        post.location = row['location'].substring(0, row['location'].indexOf(','));
+        post.temperature = row['temperature'];
+        post.location = row['location'];
         console.log("post.location: " +post.location);
         //console.log("newDate year, seconds är:"+ newDate.getFullYear());
         colorsArray.unshift(post.bgcolor);
@@ -866,14 +869,14 @@ function dataSelectHandler(transaction, results){
         
         var time = formatAMPM(newDate);
         
-        if (!post.location) {
+        if ((post.location === null) || (post.temperature === null )) {
         	$('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">N/A<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
         	$('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
         }
 
         else {
         
-        $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature +'° '+ post.location +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
+        $('#wrapper').prepend('<div id="'+ post.id +'" class="savedPostWrapper"><span class="date">'+ post.temperature.substr(0, 2) +'° '+ post.location.substring(0, row['location'].indexOf(',')) +'<br><b>'+ time +' '+ months[newDate.getMonth()] +' '+ newDate.getDate() +'th </b></span><p class="div-textarea">'+ post.content +'</div></div>');
         $('#grid').prepend('<div class="gridBox" id="'+ post.id +'" style="background-color: '+ post.bgcolor +'" class="'+ post.id +'"></div>');
     	}
        
@@ -900,19 +903,14 @@ function prePopulate(db){
 
 
 
-
-
 function deletePost(db){
 	db.transaction(
 	    function (transaction) {
 		transaction.executeSql("DELETE FROM posts WHERE weather='clear-day';");
 		console.log("raderade rad");
 	    }
-	);
-	
+	);	
 }
-
-
 
 
 
@@ -959,7 +957,10 @@ function dropTables(db){
 
 
 
-function nullDataHandler(transaction, results) { }
+function nullDataHandler(transaction, results) { 
+
+
+}
  
  
  
