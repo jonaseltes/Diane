@@ -96,7 +96,7 @@ textarea, .div-textarea {
 	width: 100%;
 	height: 400px;
 	z-index: 10;
-	overflow-y:scroll;
+	/*overflow-y:scroll;*/
 	min-height: ;
 	word-wrap: normal;
 	word-break: break-word;

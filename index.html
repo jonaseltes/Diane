@@ -9,11 +9,6 @@
 <meta name="description" content="Dear Diane," />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-<!--<link rel="apple-touch-icon-precomposed" sizes="72x72" href="your-custom-icon-for-ipad(1).png" />
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="your-custom-icon-for-iphone(1).png" />-->
-<!--<link rel="apple-touch-startup-image" href="startup.png">-->
-<!--<link href="startup.png" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image">-->
-
 
 <title>Diane</title>
 
@@ -1142,12 +1137,12 @@ function mobile(){
 	
 	$("body").on("touchmove", false);
 	
-	$('#unsavedPost').keypress(function (e) {
+	$('#unsavedPost').keydown(function (e) {
 		if (e.which == 13) {
 		savePost(db);
 		$('#unsavedPost').blur();
-		return false;    //<---- Add this line
-		}
+		return false;    
+	}
 
 
 	var content_id = 'unsavedPost';  
@@ -1159,7 +1154,7 @@ function mobile(){
 
     function check_charcount(content_id, max, e)
     {   
-        if(e.which != 8 && $('#'+content_id).text().length > max)
+        if(e.which != 8 && e.which != 13 && $('#'+content_id).text().length > max)
         {
            // $('#'+content_id).text($('#'+content_id).text().substring(0, max));
             e.preventDefault();
