@@ -229,7 +229,7 @@ function getCoreColor(firstDate, secondDate, firstColor, secondColor) {
 		lightValue = L+lightVariable*diffMinsRelative;
 
 		if (typeof currentTemperature !== 'undefined'){
-			var satTemp = 1/((currentTemperature+50)*0.9);
+			var satTemp = 1/((currentTemperature+50)*0.1);
 			var hueTemp = (1/(currentTemperature))*100;
 			console.log("hueTemp: "+hueTemp);
 			console.log("satTemp: "+satTemp);
