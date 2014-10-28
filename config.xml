@@ -84,9 +84,9 @@
     </gap:config-file> 
 
 
-<!--<feature name="Geolocation">
+<feature name="Geolocation">
     <param name="ios-package" value="CDVLocation" />
-</feature>-->
+</feature>
     
     
 
